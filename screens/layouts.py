@@ -12,26 +12,35 @@ class layoutAdventure(QVBoxLayout):
     def __init__(self):
         super().__init__()
         self.section_text = QLabel()
+        self.item_text = QLabel()
         self.options = QVBoxLayout()
 
         self.addWidget(self.section_text)
+        self.addSpacing(20)
+        self.addWidget(self.item_text)
         self.addStretch(1)
         self.addLayout(self.options)
 
     def update_contents(self, section: Section):
         self.section_text.setText(section.text)
         self.clear_options()
+        self.item_text.hide()
         for option in section.options:
             btn_option = QSectionButton(option, section.options[option])
-            btn_option.clicked.connect(lambda: self.next_section(btn_option.section))
+            btn_option.clicked.connect(self.next_section)
             self.options.addWidget(btn_option)
 
-    def next_section(self, section):
+    def next_section(self):
+        section = self.sender().section
         self.sig_section_changed.emit(section)
 
     def clear_options(self):
         for i in reversed(range(self.options.count())):
             self.options.itemAt(i).widget().setParent(None)
+
+    def item_section(self, item):
+        self.item_text.show()
+        self.item_text.setText(f"You found a {item}")
 
 
 class layoutCharacter(QVBoxLayout):

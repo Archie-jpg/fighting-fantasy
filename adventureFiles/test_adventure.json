@@ -1,36 +1,54 @@
 {
-  "title" : "test_adventure",
-  "gold" : "0",
-  "provisions" : "10",
-  "equipment" : "Sword,Shield,Leather Armour",
-  "0" : {
-    "text" : "This is a test adventure",
-    "type" : "introduction",
-    "options" : {
-      "Start" : {
-        "section" : "1"
+  "title": "test_adventure",
+  "gold": "0",
+  "provisions": "10",
+  "equipment": "Sword,Shield,Leather Armour",
+  "sections" : {
+    "0": {
+      "text": "This is a test adventure",
+      "type": "introduction",
+      "options": {
+        "Start": {
+          "section": "1"
+        }
       }
-    }
-  },
-  "1" : {
-    "text": "This is the first section of the adventure",
-    "type": "simple",
-    "options": {
-      "This goes to section 2": {
-        "section": "2"
-      },
-      "This goes to section 3": {
-        "section": "3"
+    },
+    "1": {
+      "text": "This is the first section of the adventure",
+      "type": "simple",
+      "options": {
+        "This goes to section 2": {
+          "section": "2"
+        },
+        "This goes to section 3": {
+          "section": "3"
+        }
       }
     },
     "2": {
       "text": "This is section two",
-      "type": "simple"
+      "type": "item",
+      "item": "Secret Ring",
+      "options": {
+        "Go back to section 1": {
+          "section": "1"
+        },
+        "Go to section 3": {
+          "section": "3"
+        }
+      }
     },
     "3": {
-      "text": "This is section three",
-      "type" : "simple",
-      "options"
+      "text": "This is section 3",
+      "type": "simple",
+      "options": {
+        "Go to section 2": {
+          "section": "2"
+        },
+        "Go back to section 1": {
+          "section": "1"
+        }
+      }
     }
   }
 }

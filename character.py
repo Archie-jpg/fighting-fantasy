@@ -18,6 +18,10 @@ class Character:
         self.provisions = provisions
         self.equipment = equipment.split(",")
 
+    def gain_item(self, item):
+        if not (item in self.equipment):
+            self.equipment.append(item)
+
     def test_skill(self):
         if roll_twice() < self.skill:
             return True

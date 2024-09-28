@@ -32,7 +32,15 @@ class screenPlayAdventure(QGridLayout):
 
     def next_section(self, section):
         self.adventure.update_section(section)
+        current_section = self.adventure.section
         self.update_adventure_display()
+        if current_section.type == "item":
+            self.equipment_section(current_section.data["item"])
+
+    def equipment_section(self, item):
+        self.character.gain_item(item)
+        self.adventure_display.item_section(item)
+        self.update_character_display()
 
     def update_adventure_display(self):
         self.adventure_display.update_contents(self.adventure.section)

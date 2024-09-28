@@ -4,10 +4,11 @@ from utils import read_adventure
 class Adventure:
     def __init__(self, title, section):
         self.data = read_adventure(title)
-        self.section = Section(self.data[section])
+        self.sections = self.data["sections"]
+        self.section = Section(self.sections[section])
 
     def update_section(self, new_section):
-        self.section = Section(self.data[new_section])
+        self.section = Section(self.sections[new_section])
 
 
 class Section:
@@ -18,6 +19,5 @@ class Section:
         options_data = data["options"]
         self.options = {}
         for opt in options_data:
-            print(opt)
             # TODO: Options with requirements
             self.options[opt] = options_data[opt]["section"]

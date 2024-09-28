@@ -15,12 +15,14 @@
 
 
 "section_number" : {
-    "text" : "",
-    "type" : "simple",
-    "options" : {
-      "Option_text" : {
-        "section" : ""
-      },
-      "Option_text" : {
-        "section" : ""
-      }
+  "text": "",
+  "type": "simple",
+  "options": {
+    "Option_text": {
+      "section": ""
+    },
+    "Option_text": {
+      "section": ""
+    }
+  }
+}
