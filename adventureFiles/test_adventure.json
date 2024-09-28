@@ -1,0 +1,31 @@
+{
+  "title" : "test_adventure",
+  "0" : {
+    "text" : "This is a test adventure",
+    "type" : "introduction",
+    "options" : {
+      "Start" : {
+        "section" : "1"
+      }
+    }
+  },
+  "1" : {
+    "text" : "This is the first section of the adventure",
+    "type" : "simple",
+    "options" : {
+      "This goes to section 2" : {
+        "section" : "2"
+      },
+      "This goes to section 3" : {
+        "section" : "3"
+      }
+    },
+    "2" : {
+      "text" : "This is section two",
+      "type" : "simple"
+    },
+    "3" : {
+      "text" : "This is section three"
+    }
+  }
+}

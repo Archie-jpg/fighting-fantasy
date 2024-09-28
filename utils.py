@@ -11,7 +11,7 @@ def roll_twice():
 
 
 def read_adventure(title):
-    file_path = title.replace(" ", "_") + ".json"
-    with open(file_path):
-        data = json.load(file_path)
+    file_path = "adventureFiles/" + title.replace(" ", "_") + ".json"
+    with open(file_path) as json_data:
+        data = json.load(json_data)
     return data

@@ -3,6 +3,9 @@ from screens.chooseAdventure import screenChooseAdventure
 from screens.playAdventure import screenPlayAdventure
 
 
+
+
+
 class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
@@ -21,14 +24,18 @@ class MainWindow(QMainWindow):
 
     def new_game(self):
         screen = screenChooseAdventure()
-        main_widget = QWidget()
-        main_widget.setLayout(screen)
-        self.setCentralWidget(main_widget)
+        self.change_screen(screen)
         screen.adventure_selected.connect(self.start_new_adventure)
 
     def start_new_adventure(self, title):
         screen = screenPlayAdventure()
+        self.change_screen(screen)
         screen.new_adventure(title)
+
+    def change_screen(self, screen):
+        main_widget = QWidget()
+        main_widget.setLayout(screen)
+        self.setCentralWidget(main_widget)
 
 
 app = QApplication()
