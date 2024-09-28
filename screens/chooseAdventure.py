@@ -15,8 +15,9 @@ class screenChooseAdventure(QGridLayout):
             title = title.replace(".json", "")
             btn_adventure = QPushButton(title)
             btn_adventure.setMaximumSize(QSize(300, 40))
-            btn_adventure.clicked.connect(lambda: self.adventure_chosen(title))
+            btn_adventure.clicked.connect(self.adventure_chosen)
             self.addWidget(btn_adventure)
 
-    def adventure_chosen(self, title):
+    def adventure_chosen(self):
+        title = self.sender().text()
         self.adventure_selected.emit(title)

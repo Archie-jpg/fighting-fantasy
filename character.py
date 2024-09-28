@@ -17,4 +17,16 @@ class Character:
         self.gold = gold
         self.provisions = provisions
         self.equipment = equipment.split(",")
-        print(equipment)
+
+    def test_skill(self):
+        if roll_twice() < self.skill:
+            return True
+        else:
+            return False
+
+    def test_luck(self):
+        self.luck -= 1
+        if roll_twice() < self.luck + 1:
+            return True
+        else:
+            return False

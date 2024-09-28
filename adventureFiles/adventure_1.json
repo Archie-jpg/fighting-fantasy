@@ -7,8 +7,9 @@
         "text" : "You find yourself at the entrance to a dungeon.",
         "type" : "introduction",
         "options" : {
-            "Start adventure" : {
-            "section" : "1"
-       }
+            "Start adventure": {
+                "section": "1"
+            }
+        }
     }
-},
+}

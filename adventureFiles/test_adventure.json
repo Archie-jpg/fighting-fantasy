@@ -13,22 +13,24 @@
     }
   },
   "1" : {
-    "text" : "This is the first section of the adventure",
-    "type" : "simple",
-    "options" : {
-      "This goes to section 2" : {
-        "section" : "2"
+    "text": "This is the first section of the adventure",
+    "type": "simple",
+    "options": {
+      "This goes to section 2": {
+        "section": "2"
       },
-      "This goes to section 3" : {
-        "section" : "3"
+      "This goes to section 3": {
+        "section": "3"
       }
     },
-    "2" : {
-      "text" : "This is section two",
-      "type" : "simple"
+    "2": {
+      "text": "This is section two",
+      "type": "simple"
     },
-    "3" : {
-      "text" : "This is section three"
+    "3": {
+      "text": "This is section three",
+      "type" : "simple",
+      "options"
     }
   }
 }
