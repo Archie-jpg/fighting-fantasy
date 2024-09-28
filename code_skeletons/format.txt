@@ -1,5 +1,8 @@
 {
     "title" : "",
+    "gold" : "0",
+    "provisions" : "10",
+    "equipment" : "item1,item2",
     "0" : {
         "text" : "This is a test",
         "type" : "introduction",

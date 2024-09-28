@@ -1,10 +1,11 @@
 from PySide6.QtCore import Signal
-from PySide6.QtWidgets import QVBoxLayout, QLabel, QGridLayout
+from PySide6.QtWidgets import QGridLayout
 
 from utils import roll_once, roll_twice
-from adventure_classes import Section, Adventure
+from adventure import Section, Adventure
 from custom_widgets import QSectionButton
 from screens.layouts import layoutAdventure, layoutCharacter
+from character import Character
 
 
 class screenPlayAdventure(QGridLayout):
@@ -15,7 +16,6 @@ class screenPlayAdventure(QGridLayout):
         self.character = None
         self.setColumnMinimumWidth(0, 600)
         self.setColumnMinimumWidth(1, 200)
-        self.setSizeConstraint(QFir)
         self.adventure_display = layoutAdventure()
         self.character_display = layoutCharacter()
         self.adventure_display.sig_section_changed.connect(self.next_section)
@@ -26,6 +26,9 @@ class screenPlayAdventure(QGridLayout):
     def new_adventure(self, title):
         self.adventure = Adventure(title, "0")
         self.update_adventure_display()
+        self.character = Character()
+        self.character.new_character(self.adventure.data["gold"], self.adventure.data["provisions"], self.adventure.data["equipment"])
+        self.update_character_display()
 
     def next_section(self, section):
         self.adventure.update_section(section)

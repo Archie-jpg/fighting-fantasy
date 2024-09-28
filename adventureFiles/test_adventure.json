@@ -1,5 +1,8 @@
 {
   "title" : "test_adventure",
+  "gold" : "0",
+  "provisions" : "10",
+  "equipment" : "Sword,Shield,Leather Armour",
   "0" : {
     "text" : "This is a test adventure",
     "type" : "introduction",
