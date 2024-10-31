@@ -21,13 +21,17 @@ class layoutAdventure(QVBoxLayout):
         self.addStretch(1)
         self.addLayout(self.options)
 
-    def update_contents(self, section: Section):
+    def update_contents(self, section: Section, items):
         self.section_text.setText(section.text)
         self.clear_options()
         self.item_text.hide()
         for option in section.options:
-            btn_option = QSectionButton(option, section.options[option])
+            btn_option = QSectionButton(option)
             btn_option.clicked.connect(self.next_section)
+            if option.requirement is not None and option.requirement not in items:
+                btn_option.setEnabled(False)
+                btn_option.setText(f"Requires [{option.requirement}]")
+                btn_option.setStyleSheet("background-color: grey")
             self.options.addWidget(btn_option)
 
     def next_section(self):

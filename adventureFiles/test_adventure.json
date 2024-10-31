@@ -42,11 +42,21 @@
       "text": "This is section 3",
       "type": "simple",
       "options": {
-        "Go to section 2": {
-          "section": "2"
+        "Proceed to section 4": {
+          "section": "4",
+          "requirement": "Secret Ring"
         },
         "Go back to section 1": {
           "section": "1"
+        }
+      }
+    },
+    "4" : {
+      "text": "You have reached the end of the dungeon",
+      "type": "win",
+      "options": {
+        "There are no option after this one": {
+          "section": "4"
         }
       }
     }

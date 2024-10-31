@@ -17,7 +17,20 @@ class Section:
         self.type = data["type"]
         self.text = data["text"]
         options_data = data["options"]
-        self.options = {}
+        self.options = []
         for opt in options_data:
-            # TODO: Options with requirements
-            self.options[opt] = options_data[opt]["section"]
+            option = Option()
+            option.text = opt
+            option.section = options_data[opt]["section"]
+            try:
+                option.requirement = options_data[opt]["requirement"]
+            except KeyError:
+                option.requirement = None
+            finally:
+                self.options.append(option)
+
+class Option:
+    def __init__(self):
+        self.text = ""
+        self.section = ""
+        self.requirement = None

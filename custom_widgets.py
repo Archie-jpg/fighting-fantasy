@@ -1,8 +1,9 @@
 from PySide6.QtWidgets import QPushButton
+from adventure import Option
 
 
 class QSectionButton(QPushButton):
-    def __init__(self, text: str, section: str):
+    def __init__(self, option: Option):
         super().__init__()
-        self.setText(text)
-        self.section = section
+        self.setText(option.text)
+        self.section = option.section
