@@ -5,60 +5,70 @@
   "equipment": "Sword,Shield,Leather Armour",
   "sections" : {
     "0": {
-      "text": "This is a test adventure",
-      "type": "introduction",
+      "type": "intro",
+      "text": "This is an introduction to the adventure",
       "options": {
-        "Start": {
+        "1": {
+          "text": "Start",
           "section": "1"
         }
       }
     },
     "1": {
-      "text": "This is the first section of the adventure",
       "type": "simple",
+      "text": "This is the first section of the adventure",
       "options": {
-        "This goes to section 2": {
+        "1": {
+          "text": "This goes to section 2",
           "section": "2"
         },
-        "This goes to section 3": {
+        "2": {
+          "text": "This goes to section 3",
           "section": "3"
         }
       }
     },
     "2": {
-      "text": "This is section two",
       "type": "item",
+      "text": "This is section two",
       "item": "Secret Ring",
       "options": {
-        "Go back to section 1": {
+        "1": {
+          "text": "Go back to section 1",
           "section": "1"
         },
-        "Go to section 3": {
+        "2": {
+          "text": "Go to section 3",
           "section": "3"
         }
       }
     },
     "3": {
-      "text": "This is section 3",
       "type": "simple",
+      "text": "This is section 3",
       "options": {
-        "Proceed to section 4": {
-          "section": "4",
+        "1": {
+          "text": "Win the game",
+          "section": "5",
           "requirement": "Secret Ring"
         },
-        "Go back to section 1": {
+        "2": {
+          "text": "Lose the game",
+          "section": "4"
+        },
+        "3": {
+          "text": "Go back to section 1",
           "section": "1"
         }
       }
     },
     "4" : {
-      "text": "You have reached the end of the dungeon",
-      "type": "win",
-      "options": {
-        "There are no option after this one": {
-          "section": "4"
-        }
+      "type": "lose",
+      "text": "You have died due to a cave in"
       }
-    }
+    },
+    "5" : {
+      "type": "win",
+      "text": "You have reached the end of the dungeon"
   }
 }

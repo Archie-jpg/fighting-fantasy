@@ -1,16 +1,19 @@
+from people.statBlock import StatBlock
 from utils import roll_once, roll_twice
 
 
-class Character:
+class Character(StatBlock):
+    # This is used for the players character, which has a standard set of traits. There should only be one of these per
+    # adventure
     def __init__(self):
-        self.skill = 0
-        self.stamina = 0
+        super().__init__()
         self.luck = 0
         self.gold = 0
         self.provisions = 0
         self.equipment = []
 
     def new_character(self, gold: int, provisions: int, equipment: str):
+        self.name = "character"
         self.skill = roll_twice()
         self.stamina = 12 + roll_twice()
         self.luck = 6 + roll_once()

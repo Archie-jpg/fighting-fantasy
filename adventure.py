@@ -1,36 +1,21 @@
 from utils import read_adventure
+from section import Section
+from people.character import Character
 
 
 class Adventure:
-    def __init__(self, title, section):
+
+    def __init__(self, title):
         self.data = read_adventure(title)
-        self.sections = self.data["sections"]
-        self.section = Section(self.sections[section])
+        self.current_section = None
+        self.current_pos = ''
+        self.character = Character()
 
-    def update_section(self, new_section):
-        self.section = Section(self.sections[new_section])
+    def start_adventure(self):
+        self.go_to("0")
+        self.character.new_character(self.data["gold"], self.data["provisions"], self.data["equipment"])
 
-
-class Section:
-    def __init__(self, data):
-        self.data = data
-        self.type = data["type"]
-        self.text = data["text"]
-        options_data = data["options"]
-        self.options = []
-        for opt in options_data:
-            option = Option()
-            option.text = opt
-            option.section = options_data[opt]["section"]
-            try:
-                option.requirement = options_data[opt]["requirement"]
-            except KeyError:
-                option.requirement = None
-            finally:
-                self.options.append(option)
-
-class Option:
-    def __init__(self):
-        self.text = ""
-        self.section = ""
-        self.requirement = None
+    def go_to(self, section_number):
+        self.current_pos = section_number
+        section_data = self.data["sections"][section_number]
+        self.current_section = Section(section_data)
