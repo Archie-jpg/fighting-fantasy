@@ -18,6 +18,7 @@ class screenPlayAdventure(QGridLayout):
         # screens to update
         self.adventure_display.sig_return_to_main.connect(self.return_to_main)  # For when the adventure file wants to
         # back to the main screen
+        self.adventure_display.sig_update_character.connect(self.character_display.update_contents)
         self.addLayout(self.adventure_display, 0, 0)
         self.addLayout(self.character_display, 0, 1)
 

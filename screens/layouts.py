@@ -9,6 +9,7 @@ from people.character import Character
 class layoutAdventure(QVBoxLayout):
     sig_section_changed = Signal()
     sig_return_to_main = Signal()
+    sig_update_character = Signal()
 
     def __init__(self):
         super().__init__()
@@ -23,6 +24,8 @@ class layoutAdventure(QVBoxLayout):
         self.killed_button = QPushButton()
         self.killed_button.clicked.connect(self.character_killed)
         self.killed_button.hide()
+        self.eat_provisions_button = QPushButton("Eat provisions")
+        self.eat_provisions_button.clicked.connect(self.eat_provision)
         self.options = QVBoxLayout()
 
         self.addWidget(self.section_text)
@@ -30,6 +33,7 @@ class layoutAdventure(QVBoxLayout):
         self.addWidget(self.extra_text)
         self.addStretch(1)
         self.addWidget(self.test_button)
+        self.addWidget(self.eat_provisions_button)
         self.addWidget(self.killed_button)
         self.addLayout(self.options)
 
@@ -52,6 +56,7 @@ class layoutAdventure(QVBoxLayout):
             case "item": self.item_section()
             case "test": self.test_section()
             case "damage": self.damage_section()
+            case "eat_provisions": self.provisions_section()
             case _: raise Exception(f"This kind of section is not supported \n"
                                     f"Section number: {self.adventure.current_pos} \n"
                                     f"Section type: {self.section.type}")
@@ -79,6 +84,7 @@ class layoutAdventure(QVBoxLayout):
     def clear_options(self):
         self.extra_text.setText("")
         self.test_button.hide()
+        self.eat_provisions_button.hide()
         for i in reversed(range(self.options.count())):
             self.options.itemAt(i).widget().setParent(None)
 
@@ -115,6 +121,10 @@ class layoutAdventure(QVBoxLayout):
             return
         self.add_options()
 
+    def provisions_section(self):
+        self.eat_provisions_button.show()
+        self.add_options()
+
 # Other useful methods
     def test_stat(self):
         if self.test_button.stat == "luck":
@@ -135,6 +145,11 @@ class layoutAdventure(QVBoxLayout):
         finally:
             self.extra_text.setText("You have died")
             self.end_section(False)
+
+    def eat_provision(self):
+        self.character.eat_provision()
+        self.sig_update_character.emit()
+        self.eat_provisions_button.hide()
 
 
 class layoutCharacter(QVBoxLayout):

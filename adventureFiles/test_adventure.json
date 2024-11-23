@@ -72,7 +72,7 @@
     },
     "5": {
       "type": "win",
-      "text": "Well done, you have reched the end of the dungeon and one the game"
+      "text": "Well done, you have reched the end of the dungeon and won the game"
     },
     "6": {
       "type": "test",
@@ -86,11 +86,25 @@
     "7": {
       "type": "damage",
       "text": "Rocks suddenly fall from the ceiling onto you",
-      "damage": "2",
+      "damage": "4",
       "killed": "You are too weak to crawl out of the pile of rubble",
       "options": {
         "1": {
           "text": "Go back to where you were",
+          "section": "3"
+        }, 
+        "2": {
+          "text": "Go to a nearby log to eat some food", 
+          "section": "8"
+        }
+      }
+    },
+    "8": {
+      "type": "eat_provisions",
+      "text": "There is a small log here, at which you may eat some provisions",
+      "options": {
+        "1": {
+          "text": "Go back to section 3",
           "section": "3"
         }
       }

@@ -12,7 +12,7 @@ class Adventure:
         self.character = Character()
 
     def start_adventure(self):
-        self.character.new_character(self.data["gold"], self.data["provisions"], self.data["equipment"])
+        self.character.new_character(int(self.data["gold"]), int(self.data["provisions"]), self.data["equipment"])
         self.go_to("0")
 
     def go_to(self, section_number):
