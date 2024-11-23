@@ -14,8 +14,5 @@ class Section:
             options.append(Option(option))
         return options
 
-    def get_item(self):
-        return self._data["item"]
-
-    def get_test(self):
-        return self._data["test"]
+    def get_attribute(self, attribute):
+        return self._data[attribute]

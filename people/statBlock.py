@@ -1,4 +1,4 @@
-from utils import roll_once
+from utils import roll_once, roll_twice
 
 
 class StatBlock:
@@ -15,4 +15,8 @@ class StatBlock:
 
     def damage(self, amount):
         self.stamina -= amount
+        if self.stamina < 0: self.stamina = 0
         return self.stamina == 0
+
+    def test_skill(self):
+        return roll_twice() < self.skill

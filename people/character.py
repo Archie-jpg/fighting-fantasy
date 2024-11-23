@@ -13,6 +13,7 @@ class Character(StatBlock):
         self.equipment = []
 
     def new_character(self, gold: int, provisions: int, equipment: str):
+        """Creates a new character, using things given from the adventure."""
         self.name = "character"
         self.skill = roll_twice()
         self.stamina = 12 + roll_twice()
@@ -21,16 +22,19 @@ class Character(StatBlock):
         self.provisions = provisions
         self.equipment = equipment.split(",")
 
-    # Takes in a string for an item, and adds it to the characters equipment
     def gain_item(self, item):
+        """Adds the given item to the players equipment if they do not already have it"""
         if not (item in self.equipment):
             self.equipment.append(item)
 
-    def test_skill(self):
-        return roll_twice() < self.skill
-
     def test_luck(self):
+        """Begins by reducing the characters luck by 1, then tests their luck by the previous value. The test is
+        automatically failed if the characters luck is below 2"""
         if self.luck < 2:
             return False
         self.luck -= 1
         return roll_twice() < self.luck + 1
+
+    def eat_provision(self):
+        self.stamina += 4
+        self.provisions -= 1

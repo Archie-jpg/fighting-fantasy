@@ -16,6 +16,8 @@ class Adventure:
         self.go_to("0")
 
     def go_to(self, section_number):
+        if section_number == "-1":
+            self.current_section = Section({"text": self.current_section.get_attribute("killed"), "type": "lose"})
         self.current_pos = section_number
         section_data = self.data["sections"][section_number]
         self.current_section = Section(section_data)

@@ -59,16 +59,20 @@
         "3": {
           "text": "Go back to section 1",
           "section": "1"
+        },
+        "4": {
+          "text": "Take some damage",
+          "section": "7"
         }
       }
     },
     "4": {
       "type": "lose",
-      "text": "You have died due to a cave in"
+      "text": "You have lost the game due to a cave in"
     },
     "5": {
       "type": "win",
-      "text": "You have reached the end of the dungeon"
+      "text": "Well done, you have reched the end of the dungeon and one the game"
     },
     "6": {
       "type": "test",
@@ -77,6 +81,18 @@
         "stat": "luck",
         "success": "5",
         "fail": "3"
+      }
+    },
+    "7": {
+      "type": "damage",
+      "text": "Rocks suddenly fall from the ceiling onto you",
+      "damage": "2",
+      "killed": "You are too weak to crawl out of the pile of rubble",
+      "options": {
+        "1": {
+          "text": "Go back to where you were",
+          "section": "3"
+        }
       }
     }
   }
