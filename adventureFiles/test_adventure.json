@@ -48,8 +48,8 @@
       "text": "This is section 3",
       "options": {
         "1": {
-          "text": "Win the game",
-          "section": "5",
+          "text": "Try to win the game",
+          "section": "6",
           "requirement": "Secret Ring"
         },
         "2": {
@@ -62,13 +62,20 @@
         }
       }
     },
-    "4" : {
+    "4": {
       "type": "lose",
       "text": "You have died due to a cave in"
-      }
     },
-    "5" : {
+    "5": {
       "type": "win",
       "text": "You have reached the end of the dungeon"
+    },
+    "6": {
+      "type": "test",
+      "stat": "luck",
+      "text": "You must test your luck on this section. \n If you succeed you win the game.\nIf you fail, you will go back to where you were",
+      "success": "5",
+      "fail": "3"
+    }
   }
 }

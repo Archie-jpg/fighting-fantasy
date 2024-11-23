@@ -21,19 +21,16 @@ class Character(StatBlock):
         self.provisions = provisions
         self.equipment = equipment.split(",")
 
+    # Takes in a string for an item, and adds it to the characters equipment
     def gain_item(self, item):
         if not (item in self.equipment):
             self.equipment.append(item)
 
     def test_skill(self):
-        if roll_twice() < self.skill:
-            return True
-        else:
-            return False
+        return roll_twice() < self.skill
 
     def test_luck(self):
-        self.luck -= 1
-        if roll_twice() < self.luck + 1:
-            return True
-        else:
+        if self.luck < 2:
             return False
+        self.luck -= 1
+        return roll_twice() < self.luck + 1

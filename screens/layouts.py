@@ -1,10 +1,8 @@
 from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QVBoxLayout, QLabel, QGridLayout, QPushButton
 
-from section import Section
-from option import Option
 from adventure import Adventure
-from customWidgets import QSectionButton
+from customWidgets import QOptionButton, QTestButton
 from people.character import Character
 
 
@@ -33,6 +31,7 @@ class layoutAdventure(QVBoxLayout):
         self.character = self.adventure.character
         return self.character
 
+# The most important method
     def update_contents(self):
         section = self.adventure.current_section
         self.section_text.setText(section.text)
@@ -43,18 +42,21 @@ class layoutAdventure(QVBoxLayout):
             case "lose":
                 self.end_game(win=False)
             case "item":
-                self.item_section(section.item)
-        for option in self.adventure.current_section.options:
-            btn_option = QSectionButton(option)
-            btn_option.clicked.connect(self.next_section)
-            if option.requirement is not None and option.requirement not in self.adventure.character.equipment:
+                self.item_section(section.get_item())
+            case "test":
+                self.test_section(section.data)
+        for option in section.options:
+            btn_option = QOptionButton(option)
+            btn_option.clicked.connect(self.selected_section)
+            if option.requirement is not None and option.requirement not in self.character.equipment:
                 btn_option.setEnabled(False)
                 btn_option.setText(f"Requires [{option.requirement}]")
                 btn_option.setStyleSheet("background-color: grey")
             self.options.addWidget(btn_option)
 
-    def next_section(self):
-        self.adventure.go_to(self.sender().get_section())
+# Used for all sections
+    def next_section(self, section):
+        self.adventure.go_to(section)
         self.sig_section_changed.emit()
 
     def clear_options(self):
@@ -62,11 +64,29 @@ class layoutAdventure(QVBoxLayout):
         for i in reversed(range(self.options.count())):
             self.options.itemAt(i).widget().setParent(None)
 
+# Used to handle specific types of section
+    def selected_section(self):
+        self.next_section(self.sender().section)
+
     def item_section(self, item):
         self.item_text.show()
         self.item_text.setText(f"You found a {item}")
         self.character.gain_item(item)
 
+    def test_section(self, section):
+        btn_test = QTestButton(section["stat"], section["success"], section["fail"])
+        btn_test.clicked.connect(self.test_stat)
+        self.options.addWidget(btn_test)
+
+    def test_stat(self):
+        button = self.sender()
+        if button.stat == "luck":
+            section = button.get_section(self.character.test_luck())
+        else:
+            section = button.get_section(self.character.test_skill())
+        self.next_section(section)
+
+# Used for the end of the game
     def end_game(self, win):
         btn_return_to_menu = QPushButton("Return to main menu")
         btn_return_to_menu.clicked.connect(self.sig_return_to_main.emit)
@@ -79,7 +99,6 @@ class layoutAdventure(QVBoxLayout):
     def restart_adventure(self):
         self.adventure.start_adventure()
         self.sig_section_changed.emit()
-
 
 
 class layoutCharacter(QVBoxLayout):

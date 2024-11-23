@@ -12,8 +12,8 @@ class Adventure:
         self.character = Character()
 
     def start_adventure(self):
-        self.go_to("0")
         self.character.new_character(self.data["gold"], self.data["provisions"], self.data["equipment"])
+        self.go_to("0")
 
     def go_to(self, section_number):
         self.current_pos = section_number
