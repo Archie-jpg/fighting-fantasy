@@ -72,10 +72,12 @@
     },
     "6": {
       "type": "test",
-      "stat": "luck",
       "text": "You must test your luck on this section. \n If you succeed you win the game.\nIf you fail, you will go back to where you were",
-      "success": "5",
-      "fail": "3"
+      "test": {
+        "stat": "luck",
+        "success": "5",
+        "fail": "3"
+      }
     }
   }
 }

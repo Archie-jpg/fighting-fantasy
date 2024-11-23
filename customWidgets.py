@@ -9,12 +9,17 @@ class QOptionButton(QPushButton):
 
 
 class QTestButton(QPushButton):
-    def __init__(self, stat, success, fail):
+    def __init__(self):
         super().__init__()
-        self.stat = stat
-        self.setText(f"Test {stat}")
-        self.success = success
-        self.fail = fail
+        self.stat = None
+        self.success = None
+        self.fail = None
+
+    def set_test(self, test):
+        self.stat = test["stat"]
+        self.setText(f"Test {self.stat}")
+        self.success = test["success"]
+        self.fail = test["fail"]
 
     def get_section(self, success):
         if success:

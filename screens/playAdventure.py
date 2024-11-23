@@ -17,20 +17,15 @@ class screenPlayAdventure(QGridLayout):
         self.adventure_display.sig_section_changed.connect(self.update_screen)  # When the adventure moves on, gets both
         # screens to update
         self.adventure_display.sig_return_to_main.connect(self.return_to_main)  # For when the adventure file wants to
-        #back to the main screen
+        # back to the main screen
         self.addLayout(self.adventure_display, 0, 0)
         self.addLayout(self.character_display, 0, 1)
 
     def new_adventure(self, title):
         # For when a player starts a new adventure, from the start, with a new character
         character = self.adventure_display.new_adventure(title)
-        self.set_character(character)
-        self.update_screen()
-
-    def set_character(self, character):
-        # Sets the character of the character gui to the specified instance (Needs to be the same as the one in the
-        # adventure
         self.character_display.set_character(character)
+        self.update_screen()
 
     def update_screen(self):
         # Gets the two screens to update their graphics
