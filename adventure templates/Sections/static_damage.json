@@ -1,0 +1,16 @@
+"damage": {
+      "type": "damage",
+      "text": "",
+      "damage": "amount_of_damage",
+      "killed": "Test_to_display_if_character_dies_optional",
+      "options": {
+        "1": {
+          "text": "",
+          "section": ""
+        },
+        "2": {
+          "text": "",
+          "section": ""
+        }
+      }
+    },

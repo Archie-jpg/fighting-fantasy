@@ -1,11 +1,11 @@
-from PySide6.QtWidgets import QPushButton
+from PySide6.QtWidgets import QPushButton, QVBoxLayout
 
 
 class QOptionButton(QPushButton):
     def __init__(self, option):
         super().__init__()
         self.section = option.section
-        self.setText(option.text)
+        self.setText(f"{option.text}, turn to {self.section}")
 
 
 class QTestButton(QPushButton):

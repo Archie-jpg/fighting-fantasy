@@ -1,0 +1,22 @@
+{
+  "title": "",
+  "gold": "int",
+  "provisions": "int",
+  "equipment": "CommaSeparatedList",
+  "sections" : {
+    "intro": {
+      "type": "intro",
+      "text": "",
+      "options": {
+        "1": {
+          "text": "Start",
+          "section": "1"
+        }
+      }
+    },
+    "end_win": {
+      "type": "win",
+      "text": ""
+    }
+  }
+}

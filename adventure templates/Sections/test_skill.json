@@ -1,0 +1,9 @@
+"test_skill": {
+      "type": "test",
+      "text": "",
+      "test": {
+        "stat": "skill",
+        "success": "section_number",
+        "fail": "section_number"
+      }
+    },

@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QVBoxLayout, QLabel, QGridLayout, QPushButton
 from adventure import Adventure
 from customWidgets import QOptionButton, QTestButton
 from people.character import Character
+from combat import QCombatWidget
 
 
 class layoutAdventure(QVBoxLayout):
@@ -26,11 +27,15 @@ class layoutAdventure(QVBoxLayout):
         self.killed_button.hide()
         self.eat_provisions_button = QPushButton("Eat provisions")
         self.eat_provisions_button.clicked.connect(self.eat_provision)
+        self.combat_layout = QCombatWidget()
+        self.combat_layout.sig_damage_player.connect(self.character_hit)
+        self.combat_layout.sig_win.connect(self.win_combat)
         self.options = QVBoxLayout()
 
         self.addWidget(self.section_text)
         self.addSpacing(20)
         self.addWidget(self.extra_text)
+        self.addWidget(self.combat_layout)
         self.addStretch(1)
         self.addWidget(self.test_button)
         self.addWidget(self.eat_provisions_button)
@@ -41,6 +46,7 @@ class layoutAdventure(QVBoxLayout):
         self.adventure = Adventure(title)
         self.adventure.start_adventure()
         self.character = self.adventure.character
+        self.combat_layout.character = self.adventure.character
         return self.character
 
 # The most important method
@@ -53,10 +59,10 @@ class layoutAdventure(QVBoxLayout):
             case "intro": self.add_options()
             case "win": self.end_section(win=True)
             case "lose": self.end_section(win=False)
-            case "item": self.item_section()
             case "test": self.test_section()
             case "damage": self.damage_section()
-            case "eat_provisions": self.provisions_section()
+            case "combat": self.combat_section()
+            case "reward": self.reward_section()
             case _: raise Exception(f"This kind of section is not supported \n"
                                     f"Section number: {self.adventure.current_pos} \n"
                                     f"Section type: {self.section.type}")
@@ -125,6 +131,30 @@ class layoutAdventure(QVBoxLayout):
         self.eat_provisions_button.show()
         self.add_options()
 
+    def combat_section(self):
+        self.combat_layout.setVisible(True)
+        monsters = self.section.get_attribute("combat")
+        self.combat_layout.set_combat(monsters)
+
+    def reward_section(self):
+        section = self.section
+        items = section.get_attribute("items")
+        if section.get_attribute("provisions") != "false":
+            self.provisions_section()
+        if items != "":
+            for item in items.split(","):
+                self.character.gain_item(item)
+        self.character.get_gold(int(section.get_attribute("gold")))
+        self.reward_stat("skill")
+        self.reward_stat("stamina")
+        self.reward_stat("luck")
+
+    def gold_section(self):
+        gold = self.section.get_attribute("amount")
+        self.extra_text.setText(f"You gain {gold} gold pieces")
+        self.character.gold += int(gold)
+        self.add_options()
+
 # Other useful methods
     def test_stat(self):
         if self.test_button.stat == "luck":
@@ -140,6 +170,7 @@ class layoutAdventure(QVBoxLayout):
     def character_killed(self):
         """For when the character is killed during the adventure"""
         self.clear_options()
+        self.removeWidget(self.combat_layout)
         try:
             self.section_text.setText(self.section.get_attribute("killed"))
         finally:
@@ -150,6 +181,29 @@ class layoutAdventure(QVBoxLayout):
         self.character.eat_provision()
         self.sig_update_character.emit()
         self.eat_provisions_button.hide()
+
+    def character_hit(self):
+        self.character.combat_wound()
+        self.sig_update_character.emit()
+        if self.character.stamina <= 0:
+            self.lose_combat()
+
+    def win_combat(self):
+        self.combat_layout.setVisible(False)
+        self.next_section(self.section.get_attribute("win"))
+
+    def lose_combat(self):
+        self.combat_layout.setVisible(False)
+        self.character_killed()
+
+    def reward_stat(self, stat: str):
+        stat_value = self.section.get_attribute(stat)
+        if stat_value == "0":
+            return
+        elif stat_value == "restore":
+            self.character.restore_stat(stat)
+        else:
+            self.character.increase_stat(int(stat_value), stat)
 
 
 class layoutCharacter(QVBoxLayout):
@@ -195,4 +249,7 @@ class layoutCharacter(QVBoxLayout):
         self.provisions.setText(str(self.character.provisions))
         items = "\n".join(self.character.equipment)
         self.equipment.setText(items)
+
+    def update_stamina(self):
+        self.stamina.setText(str(self.character.stamina))
 

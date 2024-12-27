@@ -1,0 +1,15 @@
+"simple": {
+      "type": "simple",
+      "text": "",
+      "options": {
+        "1": {
+          "text": "",
+          "section": ""
+        },
+        "2": {
+          "text": "",
+          "section": "",
+          "requirement": "Item_Player_could_have"
+        }
+      }
+    },

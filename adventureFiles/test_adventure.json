@@ -11,103 +11,52 @@
         "1": {
           "text": "Start",
           "section": "1"
-        }
-      }
-    },
-    "1": {
-      "type": "simple",
-      "text": "This is the first section of the adventure",
-      "options": {
-        "1": {
-          "text": "This goes to section 2",
-          "section": "2"
         },
         "2": {
-          "text": "This goes to section 3",
+          "text": "Damage",
           "section": "3"
         }
       }
     },
+    "1": {
+      "type": "combat",
+      "text": "A soldier suddenly jumps out from behind a rock. To progress with the adventure, you must defeat him",
+      "combat": {
+        "monsters": {
+          "soldier" : {
+            "skill": "2",
+            "stamina": "4"
+          },
+          "soldier 2": {
+            "skill": "2",
+            "stamina": "4"
+          }
+        },
+        "escape": "0"
+      },
+      "win": "2",
+      "killed": "The soldiers proved too powerful for you",
+      "escape": "-1"
+    },
     "2": {
-      "type": "item",
-      "text": "This is section two",
-      "item": "Secret Ring",
+      "type": "reward",
+      "text": "You gain some stuff",
+      "provisions": "true",
+      "items": "Ring of power,Other thing",
+      "gold": "2",
+      "skill": "0",
+      "luck": "0",
+      "stamina": "restore",
       "options": {
         "1": {
-          "text": "Go back to section 1",
-          "section": "1"
-        },
-        "2": {
-          "text": "Go to section 3",
+          "text": "win",
           "section": "3"
         }
       }
     },
     "3": {
-      "type": "simple",
-      "text": "This is section 3",
-      "options": {
-        "1": {
-          "text": "Try to win the game",
-          "section": "6",
-          "requirement": "Secret Ring"
-        },
-        "2": {
-          "text": "Lose the game",
-          "section": "4"
-        },
-        "3": {
-          "text": "Go back to section 1",
-          "section": "1"
-        },
-        "4": {
-          "text": "Take some damage",
-          "section": "7"
-        }
-      }
-    },
-    "4": {
-      "type": "lose",
-      "text": "You have lost the game due to a cave in"
-    },
-    "5": {
       "type": "win",
-      "text": "Well done, you have reched the end of the dungeon and won the game"
-    },
-    "6": {
-      "type": "test",
-      "text": "You must test your luck on this section. \n If you succeed you win the game.\nIf you fail, you will go back to where you were",
-      "test": {
-        "stat": "luck",
-        "success": "5",
-        "fail": "3"
-      }
-    },
-    "7": {
-      "type": "damage",
-      "text": "Rocks suddenly fall from the ceiling onto you",
-      "damage": "4",
-      "killed": "You are too weak to crawl out of the pile of rubble",
-      "options": {
-        "1": {
-          "text": "Go back to where you were",
-          "section": "3"
-        }, 
-        "2": {
-          "text": "Go to a nearby log to eat some food", 
-          "section": "8"
-        }
-      }
-    },
-    "8": {
-      "type": "eat_provisions",
-      "text": "There is a small log here, at which you may eat some provisions",
-      "options": {
-        "1": {
-          "text": "Go back to section 3",
-          "section": "3"
-        }
-      }
+      "text": "You successfully defeated the guards"
     }
   }
 }

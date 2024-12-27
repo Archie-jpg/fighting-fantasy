@@ -1,0 +1,20 @@
+"reward": {
+      "type": "reward",
+      "text": "",
+      "provisions": "false",
+      "items": "list",
+      "gold": "0",
+      "skill": "int_or_restore",
+      "luck": "int_or_restore",
+      "stamina": "int_or_restore",
+      "options": {
+          "1": {
+              "text": "",
+              "section": ""
+            },
+            "2": {
+              "text": "",
+              "section": ""
+            }
+      }
+},

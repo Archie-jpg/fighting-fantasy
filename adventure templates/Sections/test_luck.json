@@ -1,0 +1,9 @@
+"test_luck": {
+      "type": "test",
+      "text": "",
+      "test": {
+        "stat": "luck",
+        "success": "section_number",
+        "fail": "section_number"
+      }
+    },

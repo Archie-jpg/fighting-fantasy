@@ -15,4 +15,8 @@ class Section:
         return options
 
     def get_attribute(self, attribute):
-        return self._data[attribute]
+        try:
+            return self._data[attribute]
+        except KeyError:
+            print(f"Error {attribute} not set")
+            return ""
