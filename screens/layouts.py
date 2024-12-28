@@ -2,9 +2,10 @@ from PySide6.QtCore import Signal
 from PySide6.QtWidgets import QVBoxLayout, QLabel, QGridLayout, QPushButton
 
 from adventure import Adventure
-from customWidgets import QOptionButton, QTestButton
+from customWidgets.QOptionButton import QOptionButton
+from customWidgets.QCombatWidget import QCombatWidget
+from customWidgets.QTestButton import QTestButton
 from people.character import Character
-from combat import QCombatWidget
 
 
 class layoutAdventure(QVBoxLayout):
@@ -30,6 +31,7 @@ class layoutAdventure(QVBoxLayout):
         self.combat_layout = QCombatWidget()
         self.combat_layout.sig_damage_player.connect(self.character_hit)
         self.combat_layout.sig_win.connect(self.win_combat)
+        self.combat_layout.sig_escape.connect(self.escape_combat)
         self.options = QVBoxLayout()
 
         self.addWidget(self.section_text)
@@ -172,7 +174,7 @@ class layoutAdventure(QVBoxLayout):
         self.clear_options()
         self.removeWidget(self.combat_layout)
         try:
-            self.section_text.setText(self.section.get_attribute("killed"))
+            self.section_text.setText(self.section.get_attribute("killed_text"))
         finally:
             self.extra_text.setText("You have died")
             self.end_section(False)
@@ -190,11 +192,16 @@ class layoutAdventure(QVBoxLayout):
 
     def win_combat(self):
         self.combat_layout.setVisible(False)
-        self.next_section(self.section.get_attribute("win"))
+        self.next_section(self.section.get_attribute("win_section"))
 
     def lose_combat(self):
         self.combat_layout.setVisible(False)
         self.character_killed()
+
+    def escape_combat(self):
+        self.combat_layout.setVisible(False)
+        self.character_hit()
+        self.next_section(self.section.get_attribute("escape_section"))
 
     def reward_stat(self, stat: str):
         stat_value = self.section.get_attribute(stat)

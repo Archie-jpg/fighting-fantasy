@@ -1,0 +1,16 @@
+"combat": {
+      "type": "combat",
+      "text": "",
+      "combat": {
+        "monsters": {
+          "soldier" : {
+            "skill": "number",
+            "stamina": "number"
+          }
+        },
+        "escape": "round_number"
+      },
+      "win": "section",
+      "killed": "",
+      "escape": "optional"
+    },

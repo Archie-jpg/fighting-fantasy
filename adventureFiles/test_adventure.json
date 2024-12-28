@@ -32,11 +32,11 @@
             "stamina": "4"
           }
         },
-        "escape": "0"
+        "escape": "2"
       },
-      "win": "2",
-      "killed": "The soldiers proved too powerful for you",
-      "escape": "-1"
+      "win_section": "2",
+      "killed_text": "The soldiers proved too powerful for you",
+      "escape_section": "3"
     },
     "2": {
       "type": "reward",
