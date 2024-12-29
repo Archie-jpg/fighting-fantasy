@@ -3,7 +3,7 @@
   "gold": "0",
   "provisions": "10",
   "equipment": "Sword,Shield,Leather Armour",
-  "sections" : {
+  "sections": {
     "0": {
       "type": "intro",
       "text": "This is an introduction to the adventure",
@@ -11,52 +11,39 @@
         "1": {
           "text": "Start",
           "section": "1"
-        },
-        "2": {
-          "text": "Damage",
-          "section": "3"
         }
       }
     },
     "1": {
-      "type": "combat",
-      "text": "A soldier suddenly jumps out from behind a rock. To progress with the adventure, you must defeat him",
-      "combat": {
-        "monsters": {
-          "soldier" : {
-            "skill": "2",
-            "stamina": "4"
-          },
-          "soldier 2": {
-            "skill": "2",
-            "stamina": "4"
-          }
+      "type": "simple",
+      "text": "To win the game you need at least 3 gold",
+      "options": {
+        "1": {
+          "text": "Win the game",
+          "section": "3",
+          "cost": "3"
         },
-        "escape": "2"
-      },
-      "win_section": "2",
-      "killed_text": "The soldiers proved too powerful for you",
-      "escape_section": "3"
+        "2": {
+          "text": "Gain 3 gold",
+          "section": "2"
+        }
+      }
     },
     "2": {
       "type": "reward",
-      "text": "You gain some stuff",
-      "provisions": "true",
-      "items": "Ring of power,Other thing",
-      "gold": "2",
-      "skill": "0",
-      "luck": "0",
-      "stamina": "restore",
+      "text": "You find 3 gold sat in the middle of this room",
+      "provisions": "false",
+      "gold": "3",
       "options": {
         "1": {
-          "text": "win",
-          "section": "3"
+          "text": "Return",
+          "section": "1"
         }
       }
     },
     "3": {
       "type": "win",
-      "text": "You successfully defeated the guards"
+      "text": "Well done"
     }
   }
 }

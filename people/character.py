@@ -30,7 +30,7 @@ class Character(StatBlock):
         self.provisions = provisions
         self.equipment = equipment.split(",")
 
-    def gain_item(self, item):
+    def gain_item(self, item: str):
         """Adds the given item to the players equipment if they do not already have it"""
         if not (item in self.equipment):
             self.equipment.append(item)
@@ -47,23 +47,37 @@ class Character(StatBlock):
         self.increase_stat(4, self.STAMINA)
         self.provisions -= 1
 
-    def get_gold(self, amount):
+    def gain_gold(self, amount: int):
         self.gold += amount
 
-    def restore_stat(self, stat):
+    def spend_gold(self, amount: int):
+        self.gold -= amount
+
+    def restore_stat(self, stat: str):
+        """
+        Restore the specified stat back to the characters initial value
+        :param stat: should be stamina, skill or luck
+        """
         match stat:
             case self.STAMINA: self.stamina = copy(self._initial_stamina)
             case self.SKILL: self.skill = copy(self._initial_skill)
             case self.LUCK: self.luck = copy(self._initial_luck)
 
-    def increase_stat(self, amount, stat, above_initial=False):
+    def increase_stat(self, amount: int, stat: str, above_initial=False):
+        """
+        Increase the current value of the specified stat by amount, up to a maximum of it's initial value
+        :param amount: The value to increase the stat by
+        :param stat: should be stamina, skill or luck
+        :param above_initial: Default of False, if set to True, the value of the stat may go above initial
+        """
         def increase(current, initial):
+            """Does the increase operation"""
             current += amount
             if current > initial and not above_initial:
                 current = copy(initial)
-            else:
-                initial = copy(current)
         match stat:
             case self.STAMINA: increase(self.stamina, self._initial_stamina)
             case self.SKILL: increase(self.skill, self._initial_skill)
             case self.LUCK: increase(self.luck, self._initial_luck)
+
+

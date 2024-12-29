@@ -1,0 +1,136 @@
+{ 
+  "title": "test_adventure",
+  "gold": "0",
+  "provisions": "10",
+  "equipment": "Sword,Shield,Leather Armour",
+  "sections" : {
+    "intro": {
+      "type": "intro",
+      "text": "",
+      "options": {
+        "1": {
+          "text": "Start",
+          "section": "1"
+        }
+      }
+    },
+    "simple": {
+      "type": "simple",
+      "text": "",
+      "options": {
+        "1": {
+          "text": "",
+          "section": ""
+        },
+        "2": {
+          "text": "",
+          "section": "",
+          "requirement": "Item_Player_could_have"
+        }
+      }
+    },
+    "item": {
+      "type": "item",
+      "text": "",
+      "item": "",
+      "options": {
+        "1": {
+          "text": "",
+          "section": ""
+        },
+        "2": {
+          "text": "",
+          "section": ""
+        }
+      }
+    },
+    "test_luck": {
+      "type": "test",
+      "text": "",
+      "test": {
+        "stat": "luck",
+        "success": "section_number",
+        "fail": "section_number"
+      }
+    },
+    "test_skill": {
+      "type": "test",
+      "text": "",
+      "test": {
+        "stat": "skill",
+        "success": "section_number",
+        "fail": "section_number"
+      }
+    },
+    "damage": {
+      "type": "damage",
+      "text": "",
+      "damage": "amount_of_damage",
+      "killed": "Test_to_display_if_character_dies_optional",
+      "options": {
+        "1": {
+          "text": "",
+          "section": ""
+        }, 
+        "2": {
+          "text": "", 
+          "section": ""
+        }
+      }
+    },
+    "eat_provisions": {
+      "type": "eat_provisions",
+      "text": "",
+      "options": {
+        "1": {
+          "text": "",
+          "section": ""
+        },
+        "2": {
+          "text": "", 
+          "section": ""
+        }
+      }
+    },
+    "combat": {
+      "type": "combat",
+      "text": "",
+      "combat": {
+        "monsters": {
+          "soldier" : {
+            "skill": "number",
+            "stamina": "number"
+          }
+        },
+        "escape": "round_number"
+      },
+      "win": "section",
+      "killed": "",
+      "escape": "optional"
+    },
+    "gold": {
+      "type": "gold",
+      "text": "",
+      "amount": "int",
+      "options": {
+        "1": {
+          "text": "",
+          "section": ""
+        },
+        "2": {
+          "text": "",
+          "section": "",
+          "requirement": "Item_Player_could_have"
+        }
+      }
+    },
+    "end_lose": {
+      "type": "lose",
+      "text": ""
+    },
+    "end_win": {
+      "type": "win",
+      "text": ""
+    }
+  }
+}

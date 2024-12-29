@@ -84,7 +84,17 @@ class layoutAdventure(QVBoxLayout):
                 btn_option.setEnabled(False)
                 btn_option.setText(f"Requires [{option.requirement}]")
                 btn_option.setStyleSheet("background-color: grey")
+            elif option.cost > 0:
+                btn_option.clicked.connect(self.option_cost)
+                if self.character.gold < option.cost:
+                    btn_option.setEnabled(False)
+                    btn_option.setText(f"Costs {option.cost} gold")
+                    btn_option.setStyleSheet("background-color: grey")
             self.options.addWidget(btn_option)
+
+    def option_cost(self):
+        self.character.spend_gold(self.sender().cost)
+        self.next_section(self.sender().section)
 
     def select_section(self):
         self.next_section(self.sender().section)
@@ -129,10 +139,6 @@ class layoutAdventure(QVBoxLayout):
             return
         self.add_options()
 
-    def provisions_section(self):
-        self.eat_provisions_button.show()
-        self.add_options()
-
     def combat_section(self):
         self.combat_layout.setVisible(True)
         monsters = self.section.get_attribute("combat")
@@ -141,20 +147,17 @@ class layoutAdventure(QVBoxLayout):
     def reward_section(self):
         section = self.section
         items = section.get_attribute("items")
+        gold = section.get_attribute("gold")
         if section.get_attribute("provisions") != "false":
-            self.provisions_section()
+            self.add_provisions_option()
         if items != "":
             for item in items.split(","):
                 self.character.gain_item(item)
-        self.character.get_gold(int(section.get_attribute("gold")))
+        if gold != "":
+            self.character.gain_gold(int(gold))
         self.reward_stat("skill")
         self.reward_stat("stamina")
         self.reward_stat("luck")
-
-    def gold_section(self):
-        gold = self.section.get_attribute("amount")
-        self.extra_text.setText(f"You gain {gold} gold pieces")
-        self.character.gold += int(gold)
         self.add_options()
 
 # Other useful methods
@@ -178,6 +181,10 @@ class layoutAdventure(QVBoxLayout):
         finally:
             self.extra_text.setText("You have died")
             self.end_section(False)
+
+    def add_provisions_option(self):
+        self.eat_provisions_button.show()
+        self.add_options()
 
     def eat_provision(self):
         self.character.eat_provision()
@@ -205,12 +212,14 @@ class layoutAdventure(QVBoxLayout):
 
     def reward_stat(self, stat: str):
         stat_value = self.section.get_attribute(stat)
-        if stat_value == "0":
+        if stat_value == "":
             return
         elif stat_value == "restore":
             self.character.restore_stat(stat)
         else:
             self.character.increase_stat(int(stat_value), stat)
+
+
 
 
 class layoutCharacter(QVBoxLayout):

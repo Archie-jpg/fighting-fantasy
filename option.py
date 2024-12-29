@@ -5,6 +5,10 @@ class Option:
         self.section = data["section"]
         try:
             self.requirement = data["requirement"]
+            return
         except KeyError:
-            # If the option does not have a requirement, it is just set to none
             self.requirement = None
+        try:
+            self.cost = int(data["cost"])
+        except KeyError:
+            self.cost = 0
