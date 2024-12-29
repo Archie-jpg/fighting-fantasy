@@ -1,0 +1,17 @@
+"section_number": {
+      "type": "shop",
+      "text": "",
+      "shop": {
+        "item": "price"
+      }
+      "options": {
+        "1": {
+          "text": "",
+          "section": ""
+        },
+        "2": {
+          "text": "",
+          "section": "",
+        }
+      }
+    },

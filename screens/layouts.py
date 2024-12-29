@@ -4,6 +4,7 @@ from PySide6.QtWidgets import QVBoxLayout, QLabel, QGridLayout, QPushButton
 from adventure import Adventure
 from customWidgets.QOptionButton import QOptionButton
 from customWidgets.QCombatWidget import QCombatWidget
+from customWidgets.QShop import QShop
 from customWidgets.QTestButton import QTestButton
 from people.character import Character
 
@@ -15,10 +16,11 @@ class layoutAdventure(QVBoxLayout):
 
     def __init__(self):
         super().__init__()
+        # Variables
         self.adventure = None
         self.character = Character()
         self.section = None
-
+        # Widgets
         self.section_text = QLabel()
         self.extra_text = QLabel()
         self.test_button = QTestButton()
@@ -33,11 +35,15 @@ class layoutAdventure(QVBoxLayout):
         self.combat_layout.sig_win.connect(self.win_combat)
         self.combat_layout.sig_escape.connect(self.escape_combat)
         self.options = QVBoxLayout()
-
+        self.shop_layout = QShop()
+        self.shop_layout.setVisible(False)
+        self.shop_layout.sig_buy_item.connect(self.buy_item)
+        # Layout
         self.addWidget(self.section_text)
         self.addSpacing(20)
         self.addWidget(self.extra_text)
         self.addWidget(self.combat_layout)
+        self.addWidget(self.shop_layout)
         self.addStretch(1)
         self.addWidget(self.test_button)
         self.addWidget(self.eat_provisions_button)
@@ -65,6 +71,7 @@ class layoutAdventure(QVBoxLayout):
             case "damage": self.damage_section()
             case "combat": self.combat_section()
             case "reward": self.reward_section()
+            case "shop": self.shop_section()
             case _: raise Exception(f"This kind of section is not supported \n"
                                     f"Section number: {self.adventure.current_pos} \n"
                                     f"Section type: {self.section.type}")
@@ -103,6 +110,7 @@ class layoutAdventure(QVBoxLayout):
         self.extra_text.setText("")
         self.test_button.hide()
         self.eat_provisions_button.hide()
+        self.shop_layout.hide()
         for i in reversed(range(self.options.count())):
             self.options.itemAt(i).widget().setParent(None)
 
@@ -125,6 +133,7 @@ class layoutAdventure(QVBoxLayout):
         self.add_options()
 
     def test_section(self):
+        """For sections where the player must test one of their stats"""
         test = self.section.get_attribute("test")
         self.test_button.set_test(test)
         self.test_button.show()
@@ -158,6 +167,11 @@ class layoutAdventure(QVBoxLayout):
         self.reward_stat("skill")
         self.reward_stat("stamina")
         self.reward_stat("luck")
+        self.add_options()
+
+    def shop_section(self):
+        self.shop_layout.setVisible(True)
+        self.shop_layout.create_shop(self.section.get_attribute("shop"), self.character.gold)
         self.add_options()
 
 # Other useful methods
@@ -219,7 +233,10 @@ class layoutAdventure(QVBoxLayout):
         else:
             self.character.increase_stat(int(stat_value), stat)
 
-
+    def buy_item(self, name, price):
+        self.character.spend_gold(price)
+        self.character.gain_item(name)
+        self.sig_update_character.emit()
 
 
 class layoutCharacter(QVBoxLayout):

@@ -65,5 +65,3 @@ class QCombatWidget(QWidget):
             # noinspection PyUnresolvedReferences
             self.current_monster.set_monster(self.other_monsters.itemAt(0).widget().monster)
             self.other_monsters.itemAt(0).widget().deleteLater()
-            if self.other_monsters.isEmpty():
-                self.btn_change_target.hide()

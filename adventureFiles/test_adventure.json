@@ -1,6 +1,6 @@
 {
   "title": "test_adventure",
-  "gold": "0",
+  "gold": "10",
   "provisions": "10",
   "equipment": "Sword,Shield,Leather Armour",
   "sections": {
@@ -15,29 +15,18 @@
       }
     },
     "1": {
-      "type": "simple",
-      "text": "To win the game you need at least 3 gold",
+      "type": "shop",
+      "text": "You find a small stall selling some items",
+      "shop": {
+        "apple": "1",
+        "pear": "3",
+        "orange": "2",
+        "gold plated sword": "100"
+      },
       "options": {
         "1": {
           "text": "Win the game",
-          "section": "3",
-          "cost": "3"
-        },
-        "2": {
-          "text": "Gain 3 gold",
-          "section": "2"
-        }
-      }
-    },
-    "2": {
-      "type": "reward",
-      "text": "You find 3 gold sat in the middle of this room",
-      "provisions": "false",
-      "gold": "3",
-      "options": {
-        "1": {
-          "text": "Return",
-          "section": "1"
+          "section": "3"
         }
       }
     },
