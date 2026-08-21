@@ -14,6 +14,7 @@ class MainWindow(QMainWindow):
         # Add Home Screen
         self.home_screen = HomeScreen()
         self.screens.addWidget(self.home_screen)
+        self.home_screen.set_up()
 
         self.screens.setCurrentWidget(self.home_screen)
 

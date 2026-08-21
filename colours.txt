@@ -1,0 +1,5 @@
+@colour_1 = #FF595E
+@colour_2 = #FFCA3A
+@colour_3 = #8AC926
+@colour_4 = #1982C4
+@coluor_5 = #6A4C93
