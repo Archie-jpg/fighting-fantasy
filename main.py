@@ -9,7 +9,8 @@ class MainWindow(QMainWindow):
         self.resize(800, 600)
         center_window(self)
         
-        self.screens = QStackedWidget(parent=self)
+        self.screens = QStackedWidget()
+        self.setCentralWidget(self.screens)
         # Add Home Screen
         self.home_screen = HomeScreen()
         self.screens.addWidget(self.home_screen)
@@ -20,6 +21,10 @@ def main():
     app = QApplication([])
     mainWindow = MainWindow()
     mainWindow.show()
+    # Grab app styles
+    with open("styles.qss", "r") as f:
+        _style = f.read()
+        app.setStyleSheet(_style)
     sys.exit(app.exec())
 
 if __name__ == "__main__":
