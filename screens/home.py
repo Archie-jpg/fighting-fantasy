@@ -1,7 +1,9 @@
 from PySide6.QtWidgets import QPushButton, QSizePolicy, QSpacerItem, QVBoxLayout, QGridLayout, QWidget, QLabel
-from PySide6.QtCore import QMargins, Qt
+from PySide6.QtCore import QMargins, Qt, Signal
 
 class HomeScreen(QWidget):
+    start_new_adventure: Signal = Signal()
+    
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.lay_main: QGridLayout = QGridLayout()
@@ -45,10 +47,12 @@ class HomeScreen(QWidget):
         
         self.btn_play_new: QPushButton = QPushButton("New")
         self.btn_play_new.setObjectName("menu_btn")
+        self.btn_play_new.clicked.connect(self.start_new_adventure.emit)
         self.lay_play_options.addWidget(self.btn_play_new)
         
         self.btn_play_continue: QPushButton = QPushButton("Continue")
         self.btn_play_continue.setObjectName("menu_btn")
+        self.btn_play_continue.setDisabled(True)
         self.lay_play_options.addWidget(self.btn_play_continue)
         
         self.lay_create_options: QVBoxLayout = QVBoxLayout()
@@ -59,10 +63,12 @@ class HomeScreen(QWidget):
         
         self.btn_create_new: QPushButton = QPushButton("New")
         self.btn_create_new.setObjectName("menu_btn")
+        self.btn_create_new.setDisabled(True)
         self.lay_create_options.addWidget(self.btn_create_new)
         
         self.btn_create_continue: QPushButton = QPushButton("Continue")
         self.btn_create_continue.setObjectName("menu_btn")
+        self.btn_create_continue.setDisabled(True)
         self.lay_create_options.addWidget(self.btn_create_continue)
         
         self.hidden_create_spacer = QSpacerItem(0, 0)
