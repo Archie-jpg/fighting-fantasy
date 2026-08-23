@@ -1,5 +1,5 @@
-from PySide6.QtWidgets import QPushButton, QVBoxLayout, QGridLayout, QWidget, QLabel
-from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QPushButton, QSizePolicy, QSpacerItem, QVBoxLayout, QGridLayout, QWidget, QLabel
+from PySide6.QtCore import QMargins, Qt
 
 class HomeScreen(QWidget):
     def __init__(self, parent=None):
@@ -17,7 +17,6 @@ class HomeScreen(QWidget):
         self.lay_main.addWidget(self.title, 0, 1)
         
         self.btn_play: QPushButton = QPushButton("Play")
-        print(self.btn_play.normalGeometry())
         self.btn_play.clicked.connect(self.show_play_options)
         self.btn_play.setObjectName("menu_btn")
         self.lay_menu.addWidget(self.btn_play)
@@ -35,9 +34,11 @@ class HomeScreen(QWidget):
         self.hidden_options: QVBoxLayout = QVBoxLayout()
         self.lay_main.addLayout(self.hidden_options, 1, 2)
         
+        self.hidden_play_spacer = QSpacerItem(0, 0)
+        self.hidden_options.addSpacerItem(self.hidden_play_spacer)
+        
         self.lay_play_options: QVBoxLayout = QVBoxLayout()
         self.play_options = QWidget()
-        self.play_options.setStyleSheet("background-color: red")
         self.play_options.setLayout(self.lay_play_options)
         self.play_options.hide()
         self.hidden_options.addWidget(self.play_options)
@@ -52,7 +53,6 @@ class HomeScreen(QWidget):
         
         self.lay_create_options: QVBoxLayout = QVBoxLayout()
         self.create_options = QWidget()
-        self.create_options.setStyleSheet("background-color: green")
         self.create_options.hide()
         self.create_options.setLayout(self.lay_create_options)
         self.hidden_options.addWidget(self.create_options)
@@ -65,15 +65,17 @@ class HomeScreen(QWidget):
         self.btn_create_continue.setObjectName("menu_btn")
         self.lay_create_options.addWidget(self.btn_create_continue)
         
-    def set_up(self):
-        print(self.btn_play.height())
-        self.play_options.setMinimumHeight(self.btn_play.height())
-        self.create_options.setMinimumHeight(self.btn_create.height())
+        self.hidden_create_spacer = QSpacerItem(0, 0)
+        self.hidden_options.addSpacerItem(self.hidden_create_spacer)
         
     def show_play_options(self):
+        self.hidden_create_spacer.changeSize(0, self.btn_create.height())
+        self.hidden_play_spacer.changeSize(0, 0)
         self.create_options.hide()
         self.play_options.show()
         
     def show_create_options(self):
+        self.hidden_create_spacer.changeSize(0, 0)
+        self.hidden_play_spacer.changeSize(0, self.btn_play.height())
         self.play_options.hide()
         self.create_options.show()
