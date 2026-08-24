@@ -2,7 +2,7 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import Signal
 
 class AdventureCard(QWidget):
-    adventure_chosen: Signal = Signal()
+    adventure_chosen: Signal = Signal(str)
     
     def __init__(self, file_name: str, description, parent=None):
         QWidget.__init__(self, parent)
@@ -12,7 +12,7 @@ class AdventureCard(QWidget):
         self.file: str = file_name
         
         title = file_name.replace("_", " ")
-        title = title.replace(".csv", "")
+        title = title.replace(".json", "")
         title = title.capitalize()
         self.lbl_title = QLabel(title)
         self.lbl_title.setStyleSheet("font-size: 15px")
@@ -23,4 +23,4 @@ class AdventureCard(QWidget):
         self.main_layout.addWidget(self.lbl_description)        
         
     def mousePressEvent(self, event):
-        self.adventure_chosen.emit()
+        self.adventure_chosen.emit(self.file)
