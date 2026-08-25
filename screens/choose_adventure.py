@@ -1,8 +1,7 @@
 import os
 
 from PySide6.QtWidgets import *
-from PySide6.QtCore import QRect, Qt, Signal, Slot
-from PySide6.QtGui import QGuiApplication
+from PySide6.QtCore import Qt, Signal, Slot
 from classes.character import Character
 from utils.flowlayout import FlowLayout
 from utils.custom_widgets.adventure_card import AdventureCard
@@ -10,6 +9,7 @@ from dialogs.create_character import Create_Character
 
 class ChooseAdventureScreen(QWidget):
     return_to_menu: Signal = Signal()
+    adventure_chosen: Signal = Signal(str)
     
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -17,7 +17,7 @@ class ChooseAdventureScreen(QWidget):
         self.setLayout(self.main_layout)
         
         self.header = QLabel()
-        self.header.setObjectName("menu_title")
+        self.header.setObjectName("title")
         self.header.setText("Choose adventure")
         self.main_layout.addWidget(self.header, alignment=(Qt.AlignmentFlag.AlignLeft|Qt.AlignmentFlag.AlignTop))
         
@@ -36,6 +36,7 @@ class ChooseAdventureScreen(QWidget):
     def start_adventure(self, file: str, character: Character):
         print(file)
         print(character)
+        self.adventure_chosen.emit(file)
     
     @Slot(str)
     def create_character(self, file):
@@ -44,7 +45,7 @@ class ChooseAdventureScreen(QWidget):
         result = create_character_dialog.exec()
         create_character_dialog.deleteLater()
         
-    def play_new_adventure(self):
+    def load_adventures(self):
         self.header.setText("Choose adventure to start")
         for file in os.scandir("./adventures"):
             if file.is_file():

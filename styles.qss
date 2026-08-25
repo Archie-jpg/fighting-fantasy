@@ -1,7 +1,7 @@
-QLabel#menu_title {
+QLabel#title {
     font-size: 20px;
 }
 
-QPushButton#menu_btn {
+QPushButton, QLabel {
     font-size: 15px;
 }

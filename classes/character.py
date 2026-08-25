@@ -7,12 +7,12 @@ class Character():
     stamina: int
     init_luck = int
     luck: int
-    rations: int
+    provisions: int
     equipment: list[str]
     
     def __init__(self):
         super().__init__()
-        self.rations = 10
+        self.provisions = 10
         self.equipment = []
         
     def roll_skill(self) -> int:
@@ -45,7 +45,7 @@ class Character():
         self.luck = self.init_luck
         return self.luck
         
-    def test_skill(self) -> bool:
+    def check_skill(self) -> bool:
         """Rolls two dice, and checks if it is less than or equal to the characters current skill
 
         Returns:
@@ -53,7 +53,7 @@ class Character():
         """
         return d6.roll_twice() <= self.skill
     
-    def test_stamina(self) -> bool:
+    def check_stamina(self) -> bool:
         """Rolls two dice, and checks if it is less than or equal to the characters current stamina
 
         Returns:
@@ -61,7 +61,7 @@ class Character():
         """
         return d6.roll_twice() <= self.stamina
     
-    def test_luck(self) -> bool:
+    def check_luck(self) -> bool:
         """Rolls two dice, and checks if it is less than or equal to the characters current luck. Then reduces the charactes luck by 1
 
         Returns:

@@ -15,21 +15,18 @@ class HomeScreen(QWidget):
         self.lay_main.addLayout(self.lay_menu, 1, 1)
         
         self.title: QLabel = QLabel("Fighting Fantasy")
-        self.title.setObjectName("menu_title")
+        self.title.setObjectName("title")
         self.lay_main.addWidget(self.title, 0, 1)
         
         self.btn_play: QPushButton = QPushButton("Play")
         self.btn_play.clicked.connect(self.show_play_options)
-        self.btn_play.setObjectName("menu_btn")
         self.lay_menu.addWidget(self.btn_play)
         
         self.btn_create: QPushButton = QPushButton("Create")
-        self.btn_create.setObjectName("menu_btn")
         self.btn_create.clicked.connect(self.show_create_options)
         self.lay_menu.addWidget(self.btn_create)
         
         self.btn_settings: QPushButton = QPushButton("Settings")
-        self.btn_settings.setObjectName("menu_btn")
         self.btn_settings.setDisabled(True)
         self.lay_menu.addWidget(self.btn_settings)
         
@@ -46,12 +43,10 @@ class HomeScreen(QWidget):
         self.hidden_options.addWidget(self.play_options)
         
         self.btn_play_new: QPushButton = QPushButton("New")
-        self.btn_play_new.setObjectName("menu_btn")
         self.btn_play_new.clicked.connect(self.start_new_adventure.emit)
         self.lay_play_options.addWidget(self.btn_play_new)
         
         self.btn_play_continue: QPushButton = QPushButton("Continue")
-        self.btn_play_continue.setObjectName("menu_btn")
         self.btn_play_continue.setDisabled(True)
         self.lay_play_options.addWidget(self.btn_play_continue)
         
@@ -62,12 +57,10 @@ class HomeScreen(QWidget):
         self.hidden_options.addWidget(self.create_options)
         
         self.btn_create_new: QPushButton = QPushButton("New")
-        self.btn_create_new.setObjectName("menu_btn")
         self.btn_create_new.setDisabled(True)
         self.lay_create_options.addWidget(self.btn_create_new)
         
         self.btn_create_continue: QPushButton = QPushButton("Continue")
-        self.btn_create_continue.setObjectName("menu_btn")
         self.btn_create_continue.setDisabled(True)
         self.lay_create_options.addWidget(self.btn_create_continue)
         
