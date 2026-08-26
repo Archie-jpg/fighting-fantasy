@@ -11,3 +11,6 @@ class AdventureReader():
         Returns:
             (str): A paragraph introducing the adventure
         """
+        with open(f"{self.adventure_folder}/introduction.txt") as file:
+            intro: str = file.read()
+            return intro

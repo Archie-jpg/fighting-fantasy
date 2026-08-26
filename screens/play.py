@@ -5,13 +5,14 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import Qt, Signal, Slot
 from classes.character import Character
 from utils.custom_widgets import character_display, section_display
+from classes.adventure_reader import AdventureReader
 
 class PlayAdventureScreen(QWidget):
     # Signals
     
     # Attributes
     adventure_widget: section_display.SectionDisplay
-    character_widget: character_display.CharacterDisplay
+    character_widget: character_display.CharacterDisplay   
     
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -32,11 +33,7 @@ class PlayAdventureScreen(QWidget):
         Args:
             adventure_folder (Path): Path to the folder hte adventure is saved in
         """
-        print(f"Loading {adventure_folder.name}")
-        
-    def load_adventure_intro(self) -> NoReturn:
-        """Load the introduction of the adventure into the section display"""
-        print(f"Loading adventure")
+        self.adventure_widget.load_adventure(adventure_folder)
         
     def load_character(self, character: Character) -> NoReturn:
         """Populate the character display with the adventures character
