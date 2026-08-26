@@ -2,10 +2,12 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import Signal
 from classes.character import Character
 
+from pathlib import Path
+
 class Create_Character(QDialog):    
-    start_adventure: Signal = Signal(str, Character)
+    start_adventure: Signal = Signal(Path, Character)
     
-    def __init__(self, adventure: str, parent=None):
+    def __init__(self, adventure: Path, parent=None):
         super().__init__(parent)
         self.setWindowTitle("Create Character")
         

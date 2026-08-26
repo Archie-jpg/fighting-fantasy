@@ -1,3 +1,6 @@
+from pathlib import Path
+
+from classes.character import Character
 from screens.choose_adventure import ChooseAdventureScreen
 from screens.home import HomeScreen
 from screens.play import PlayAdventureScreen
@@ -41,7 +44,9 @@ class MainWindow(QMainWindow):
         self.choose_adventure_screen.adventure_chosen.connect(self.play_adventure)
         self.choose_adventure_screen.load_adventures()
         
-    @Slot(str)
-    def play_adventure(self, adventure_file: str):
+    @Slot(Path)
+    @Slot(Character)
+    def play_adventure(self, adventure_file: Path, character: Character):
         self.screens.setCurrentWidget(self.play_adventure_screen)
         self.play_adventure_screen.load_adventure(adventure_file)
+        self.play_adventure_screen.load_character(character)

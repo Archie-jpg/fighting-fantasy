@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 
 from PySide6.QtWidgets import *
 from PySide6.QtCore import Qt, Signal, Slot
@@ -9,7 +10,7 @@ from dialogs.create_character import Create_Character
 
 class ChooseAdventureScreen(QWidget):
     return_to_menu: Signal = Signal()
-    adventure_chosen: Signal = Signal(str)
+    adventure_chosen: Signal = Signal(Path, Character)
     
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -31,12 +32,10 @@ class ChooseAdventureScreen(QWidget):
         self.btn_return_to_menu.clicked.connect(self.return_to_menu.emit)
         self.main_layout.addWidget(self.btn_return_to_menu, alignment=(Qt.AlignmentFlag.AlignRight))
     
-    @Slot(str)
+    @Slot(Path)
     @Slot(Character) 
-    def start_adventure(self, file: str, character: Character):
-        print(file)
-        print(character)
-        self.adventure_chosen.emit(file)
+    def start_adventure(self, file: Path, character: Character):
+        self.adventure_chosen.emit(file, character)
     
     @Slot(str)
     def create_character(self, file):
@@ -47,8 +46,10 @@ class ChooseAdventureScreen(QWidget):
         
     def load_adventures(self):
         self.header.setText("Choose adventure to start")
-        for file in os.scandir("./adventures"):
-            if file.is_file():
-                adventure = AdventureCard(file.name, "This is an adventure with multiple lines in it's description to make sure that looks correct")
-                adventure.adventure_chosen.connect(self.create_character)
-                self.adventures.addWidget(adventure)
+        adventure_path = Path("./adventures")
+        for adventure in adventure_path.iterdir():
+            if adventure.is_dir():
+                adventure_card = AdventureCard(adventure)
+                adventure_card.load_description()
+                adventure_card.adventure_chosen.connect(self.create_character)
+                self.adventures.addWidget(adventure_card)
