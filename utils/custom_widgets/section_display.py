@@ -1,7 +1,8 @@
 from PySide6.QtWidgets import *
 from PySide6.QtCore import Qt, Signal, Slot
 
-from classes.adventure_reader import AdventureReader
+from classes.adventure_reader import AdventureReader, Section, Option
+from utils.custom_widgets.option_button import QOptionButton
 
 class OptionsContainter(QWidget):
     def __init__(self, parent=None):
@@ -33,12 +34,21 @@ class SectionDisplay(QWidget):
         self.lay_main.addWidget(self.options_container, alignment=Qt.AlignmentFlag.AlignBottom)
         self.setLayout(self.lay_main)
         
-    def display_section(self, number: int, text: str):
-        self.lbl_section_number.setText(str(number))
-        self.lbl_section_text.setText(text)
+    def display_section(self, section: Section):
+        self.lbl_section_number.setText(section.number)
+        self.lbl_section_text.setText(section.description)
+        for option in section.options:
+            btn_option = QOptionButton(f"{option.text}", option.next_section)
+            btn_option.clicked.connect(self.load_next_section)
+            self.options_container.main_layout.addWidget(btn_option)
         
     def load_adventure(self, adventure_file: str, section: int = 0):
         self.adventure = AdventureReader(adventure_file)
         if section == 0:
-            text = self.adventure.load_intro()
-        self.display_section(section, text)
+            section: Section = self.adventure.load_intro()
+        self.display_section(section)
+    
+    @Slot(str)
+    def load_next_section(self, section_number: str):
+        section = self.adventure.load_section(section_number)
+        self.display_section(section)
