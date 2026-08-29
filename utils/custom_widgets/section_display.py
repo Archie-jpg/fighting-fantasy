@@ -23,6 +23,8 @@ class OptionsContainter(QWidget):
             self.main_layout.addWidget(btn_option)
     
     def clear(self):
+        """Removes all options from it's layout
+        """
         while self.main_layout.count() > 0:
             item = self.main_layout.takeAt(0)
             widget = item.widget()
@@ -64,5 +66,9 @@ class SectionDisplay(QWidget):
     
     @Slot(str)
     def load_next_section(self, section_number: str):
+        """Displays the section associated with the given number
+        
+        Args:
+            section_number: Reference number of the section"""
         section = self.adventure.load_section(section_number)
         self.display_section(section)

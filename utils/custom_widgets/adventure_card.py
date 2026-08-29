@@ -28,6 +28,8 @@ class AdventureCard(QWidget):
         self.adventure_chosen.emit(self.folder_path)
         
     def load_description(self):
+        """Grabs the description.txt file from the adventures folder, and displays it's contents underneath the 
+        aventure title"""
         with open(f"{self.folder_path}/description.txt") as file:
             description: str = file.read()
             print(description)
