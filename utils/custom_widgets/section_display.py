@@ -52,7 +52,7 @@ class SectionDisplay(QWidget):
         self.lay_main.addWidget(self.lbl_section_text)
         self.lay_main.addStretch()
         self.options_container = OptionsContainter()
-        self.options_container.option_chosen.connect(self.load_next_section)
+        self.options_container.option_chosen.connect(self.load_option_chosen)
         self.lay_main.addWidget(self.options_container, alignment=Qt.AlignmentFlag.AlignBottom)
         self.setLayout(self.lay_main)
         
@@ -62,18 +62,29 @@ class SectionDisplay(QWidget):
         self.lbl_section_text.setText(section.description)
         self.options_container.load_options(section.options)
         
-    def load_adventure(self, adventure_file: str, section: int = 0):
+    def load_adventure(self, adventure_file: str, section: str = "0"):
         self.adventure = AdventureReader(adventure_file)
-        if section == 0:
-            section: Section = self.adventure.load_intro()
-        self.display_section(section)
-    
-    @Slot(str)
+        self.load_next_section(section)
+        
     def load_next_section(self, section_number: str):
         """Displays the section associated with the given number
         
         Args:
-            section_number: Reference number of the section"""
+            section_number: Reference number of the section
+        """
+        print("loading", section_number)
         section: Section = self.adventure.load_section(section_number)
+        print("section loaded")
         if section.items != []:  self.gain_items.emit(section.items)
+        print("items gained")
         self.display_section(section)
+        print("section displayed")
+    
+    @Slot(str)
+    def load_option_chosen(self, section_number: str):
+        """Load the section specified by the option chosen
+
+        Args:
+            section_number (str): Section to move to
+        """
+        self.load_next_section(section_number)
