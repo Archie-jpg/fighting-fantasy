@@ -27,6 +27,8 @@ class PlayAdventureScreen(QWidget):
         self.character_widget = character_display.CharacterDisplay()
         self.main_layout.addWidget(self.character_widget, 0, 2)
         
+        self.adventure_widget.gain_items.connect(self.give_character_items)
+        
     def load_adventure(self, adventure_folder: Path):
         """Create a new instance of an AdventureReader, and set it as the screens adventure_reader
         
@@ -43,4 +45,12 @@ class PlayAdventureScreen(QWidget):
         """
         self.character_widget.load_character(character)
         
+    @Slot(list)
+    def give_character_items(self, items: list[str]):
+        """Give the character a set of items
+
+        Args:
+            items (list[str]): The items to give to the character
+        """
+        self.character_widget.add_items(items)
     

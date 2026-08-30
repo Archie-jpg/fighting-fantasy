@@ -71,5 +71,13 @@ class Character():
         result = roll <= self.luck
         self.luck -= 1
         return result
+    
+    def add_items(self, items: list[str]):
+        """Add a set of items to equipment list
+
+        Args:
+            items (list[str]): The items to be added
+        """
+        self.equipment.extend(items)
         
         

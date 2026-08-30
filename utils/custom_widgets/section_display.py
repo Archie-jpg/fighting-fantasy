@@ -1,7 +1,8 @@
 from PySide6.QtWidgets import *
 from PySide6.QtCore import Qt, Signal, Slot
 
-from classes.adventure_reader import AdventureReader, Section, Option
+from classes.sections import Section, Option
+from classes.adventure_reader import AdventureReader
 from utils.custom_widgets.option_button import QOptionButton
 
 class OptionsContainter(QWidget):
@@ -38,6 +39,9 @@ class SectionDisplay(QWidget):
     lbl_section_text: QLabel
     options_container: OptionsContainter
     
+    # Signals
+    gain_items: Signal = Signal(list)
+    
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.lay_main = QVBoxLayout()
@@ -70,5 +74,6 @@ class SectionDisplay(QWidget):
         
         Args:
             section_number: Reference number of the section"""
-        section = self.adventure.load_section(section_number)
+        section: Section = self.adventure.load_section(section_number)
+        if section.items != []:  self.gain_items.emit(section.items)
         self.display_section(section)

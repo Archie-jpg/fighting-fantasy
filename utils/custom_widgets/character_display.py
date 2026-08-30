@@ -1,3 +1,5 @@
+from typing import NoReturn
+
 from PySide6.QtWidgets import *
 from PySide6.QtCore import Qt, Signal, Slot
 
@@ -117,6 +119,14 @@ class EquipmentWidget(QWidget):
         self.title = QLabel("Equipment")
         self.title.setObjectName("title")
         self.lay_main.addWidget(self.title)
+        
+        self.equipment = QLabel()
+        self.lay_main.addWidget(self.equipment)
+        
+    def set_equipment(self, equipment: list[str]):
+        equipment_text = ""
+        for item in equipment: equipment_text += f"{item}\n"
+        self.equipment.setText(equipment_text)
 
 
 class CharacterDisplay(QWidget):
@@ -141,13 +151,40 @@ class CharacterDisplay(QWidget):
         
         self.lay_main.addStretch()
         
+    def update_stats(self):
+        """Display characters current stats"""
+        self.stats_widget.load_stats(self.character.init_skill, self.character.skill, 
+                                    self.character.init_stamina, self.character.stamina,
+                                    self.character.init_luck, self.character.luck)
+        
+    def update_provisions(self):
+        """Display the characters current number of provisions"""
+        self.provisons_widget.set_current_provs(self.character.provisions)
+        
+    def update_potion(self):
+        """Display the characters current potion"""
+        self.potion_widget.set_potion("Stamina")
+    
+    def update_equipment(self):
+        """Display the character current equipment"""
+        self.equipment_widget.set_equipment(self.character.equipment)
+        
     def load_character(self, character: Character):
         """Display stats about the given character"""    
-        self.stats_widget.load_stats(character.init_skill, character.skill, 
-                                     character.init_stamina, character.stamina,
-                                     character.init_luck, character.luck)
-        self.provisons_widget.set_current_provs(character.provisions)
-        self.potion_widget.set_potion("Stamina")
+        self.character = character
+        self.update_stats()
+        self.update_provisions()
+        self.update_potion()
+        self.update_equipment()
+    
+    def add_items(self, items: list[str]) -> NoReturn:
+        """Add items to characters equipment, and then update displayed equipment
+
+        Args:
+            items (list[str]): The items to be added
+        """
+        self.character.add_items(items)
+        self.update_equipment()
         
         
     
