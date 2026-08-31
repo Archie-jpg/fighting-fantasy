@@ -1,6 +1,8 @@
 from utils import d6
 
-class Character():
+from PySide6.QtCore import QObject, Signal
+
+class Character(QObject):
     init_skill: int
     skill: int
     init_stamina: int
@@ -9,6 +11,10 @@ class Character():
     luck: int
     provisions: int
     equipment: list[str]
+    
+    # Signals
+    update_stats: Signal = Signal()
+    update_equipment: Signal = Signal()
     
     def __init__(self):
         super().__init__()
@@ -79,5 +85,17 @@ class Character():
             items (list[str]): The items to be added
         """
         self.equipment.extend(items)
+        self.update_equipment.emit()
+        
+    def has_item(self, item: str) -> bool:
+        """Check if item is in the characters equipment
+
+        Args:
+            item (str): Item to check for
+
+        Returns:
+            bool: Whether or not the item is in equipment
+        """
+        return item in self.equipment
         
         

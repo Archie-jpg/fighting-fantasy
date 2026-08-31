@@ -46,7 +46,7 @@ class MainWindow(QMainWindow):
         
     @Slot(Path)
     @Slot(Character)
-    def play_adventure(self, adventure_file: Path, character: Character):
+    @Slot(str)
+    def play_adventure(self, adventure_file: Path, character: Character, start_section: str):
         self.screens.setCurrentWidget(self.play_adventure_screen)
-        self.play_adventure_screen.load_adventure(adventure_file)
-        self.play_adventure_screen.load_character(character)
+        self.play_adventure_screen.load(adventure_file, character, start_section)

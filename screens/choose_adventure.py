@@ -10,7 +10,7 @@ from dialogs.create_character import Create_Character
 
 class ChooseAdventureScreen(QWidget):
     return_to_menu: Signal = Signal()
-    adventure_chosen: Signal = Signal(Path, Character)
+    adventure_chosen: Signal = Signal(Path, Character, str)
     
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -34,13 +34,13 @@ class ChooseAdventureScreen(QWidget):
     
     @Slot(Path)
     @Slot(Character) 
-    def start_adventure(self, file: Path, character: Character):
-        self.adventure_chosen.emit(file, character)
+    def start_new_adventure(self, file: Path, character: Character):
+        self.adventure_chosen.emit(file, character, "0")
     
     @Slot(str)
     def create_character(self, file):
         create_character_dialog = Create_Character(file)
-        create_character_dialog.start_adventure.connect(self.start_adventure)
+        create_character_dialog.start_adventure.connect(self.start_new_adventure)
         result = create_character_dialog.exec()
         create_character_dialog.deleteLater()
         

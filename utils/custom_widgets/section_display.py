@@ -1,8 +1,9 @@
 from PySide6.QtWidgets import *
 from PySide6.QtCore import Qt, Signal, Slot
 
+from classes.character import Character
 from classes.sections import Section, Option
-from classes.adventure_reader import AdventureReader
+from classes.adventure_player import AdventurePlayer
 from utils.custom_widgets.option_button import QOptionButton
 
 class OptionsContainter(QWidget):
@@ -17,11 +18,10 @@ class OptionsContainter(QWidget):
     def choose_option(self, next_section: str):
         self.option_chosen.emit(next_section)
         
-    def load_options(self, options: list[Option]):
-        for option in options:
-            btn_option = QOptionButton(f"{option.text}", option.next_section)
-            btn_option.clicked.connect(self.choose_option)
-            self.main_layout.addWidget(btn_option)
+    def load_option(self, option: Option):
+        btn_option = QOptionButton(option)
+        btn_option.clicked.connect(self.choose_option)
+        self.main_layout.addWidget(btn_option)
     
     def clear(self):
         """Removes all options from it's layout
@@ -33,14 +33,13 @@ class OptionsContainter(QWidget):
 
 
 class SectionDisplay(QWidget):
-    adventure: AdventureReader
+    adventure: AdventurePlayer
     lay_main: QVBoxLayout
     lbl_section_number: QLabel
     lbl_section_text: QLabel
     options_container: OptionsContainter
     
     # Signals
-    gain_items: Signal = Signal(list)
     
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -60,10 +59,11 @@ class SectionDisplay(QWidget):
         self.options_container.clear()
         self.lbl_section_number.setText(section.number)
         self.lbl_section_text.setText(section.description)
-        self.options_container.load_options(section.options)
+        for option in section.options:
+            self.options_container.load_option(option)
         
-    def load_adventure(self, adventure_file: str, section: str = "0"):
-        self.adventure = AdventureReader(adventure_file)
+    def load_adventure(self, adventure_file: str, character: Character, section: str):
+        self.adventure = AdventurePlayer(adventure_file, character)
         self.load_next_section(section)
         
     def load_next_section(self, section_number: str):
@@ -72,13 +72,8 @@ class SectionDisplay(QWidget):
         Args:
             section_number: Reference number of the section
         """
-        print("loading", section_number)
         section: Section = self.adventure.load_section(section_number)
-        print("section loaded")
-        if section.items != []:  self.gain_items.emit(section.items)
-        print("items gained")
         self.display_section(section)
-        print("section displayed")
     
     @Slot(str)
     def load_option_chosen(self, section_number: str):

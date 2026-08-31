@@ -78,6 +78,18 @@ class StatsWidget(QWidget):
         self.load_init_luck(init_luck)
         self.load_curr_luck(luck)
         
+    def update_stats(self, skill: int, stamina: int, luck: int) -> NoReturn:
+        """Update values of current stats
+
+        Args:
+            skill (int): New current skill
+            stamina (int): New current stamina
+            luck (int): New current luck
+        """
+        self.load_curr_skill(skill)
+        self.load_curr_stamina(stamina)
+        self.load_curr_luck(luck)
+        
 class ProvisionsWidget(QWidget):
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -151,11 +163,15 @@ class CharacterDisplay(QWidget):
         
         self.lay_main.addStretch()
         
-    def update_stats(self):
+    def load_stats(self):
         """Display characters current stats"""
         self.stats_widget.load_stats(self.character.init_skill, self.character.skill, 
                                     self.character.init_stamina, self.character.stamina,
                                     self.character.init_luck, self.character.luck)
+        
+    def update_stats(self):
+        """Updates current stats"""
+        self.stats_widget.update_stats(self.character.skill, self.character.stamina, self.character.luck)
         
     def update_provisions(self):
         """Display the characters current number of provisions"""
@@ -172,19 +188,15 @@ class CharacterDisplay(QWidget):
     def load_character(self, character: Character):
         """Display stats about the given character"""    
         self.character = character
-        self.update_stats()
+        self.load_stats()
         self.update_provisions()
         self.update_potion()
         self.update_equipment()
-    
-    def add_items(self, items: list[str]) -> NoReturn:
-        """Add items to characters equipment, and then update displayed equipment
-
-        Args:
-            items (list[str]): The items to be added
-        """
-        self.character.add_items(items)
-        self.update_equipment()
+        self.character.update_equipment.connect(self.update_equipment)
+        self.character.update_stats.connect(self.update_stats)
+        
+    def check_item(self, item: str) -> bool:
+        return self.character.has_item(item)
         
         
     
