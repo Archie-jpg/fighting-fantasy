@@ -49,6 +49,7 @@ class SectionDisplay(QWidget):
         self.lbl_section_number.setObjectName("title")
         self.lay_main.addWidget(self.lbl_section_number, alignment=Qt.AlignmentFlag.AlignTop|Qt.AlignmentFlag.AlignLeft)
         self.lbl_section_text = QLabel("Description")
+        self.lbl_section_text.setWordWrap(True)
         self.lay_main.addWidget(self.lbl_section_text)
         self.lay_main.addStretch()
         self.options_container = OptionsContainter()
