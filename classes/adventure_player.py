@@ -18,10 +18,11 @@ class AdventurePlayer(QObject):
     def load_section(self, section_number: str) -> Section:
         with open(f"{self.adventure_folder}/{section_number}.json", "r") as file:
             section = Section.create_from_file(section_number, json.load(file))
+            self.character.remove_items(section.items_lost)
             self.character.add_items(section.items)
             return section
         
-    def character_has_item(self, item: str) -> bool:
+    def requirement_met(self, item: str) -> bool:
         """Checks whether or not character has the given item
         
         Args:
@@ -30,5 +31,5 @@ class AdventurePlayer(QObject):
         Returns:
             bool: True if character has item, false otherwise
         """
-        return item in self.character.equipment
+        return self.character.has_item(item)
             

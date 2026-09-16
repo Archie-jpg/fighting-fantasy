@@ -62,7 +62,7 @@ class SectionDisplay(QWidget):
         self.lbl_section_text.setText(section.description)
         for option in section.options:
             btn_option = self.options_container.load_option(option)
-            if not(option.requirement == "" or self.adventure.character_has_item(option.requirement)):
+            if not(option.requirement == "" or self.adventure.requirement_met(option.requirement)):
                 btn_option.requirement_not_met()
         
     def load_adventure(self, adventure_file: str, character: Character, section: str):

@@ -87,6 +87,15 @@ class Character(QObject):
         self.equipment.extend(items)
         self.update_equipment.emit()
         
+    def remove_items(self, items: list[str]):
+        """Remove the given items from equipment list (only if they are in the characters equipment list)
+        
+        Args:
+            items(list[str]): Items to remove"""
+        for item in items:
+            if item in self.equipment: self.equipment.remove(item)
+        self.update_equipment.emit()
+        
     def has_item(self, item: str) -> bool:
         """Check if item is in the characters equipment
 
