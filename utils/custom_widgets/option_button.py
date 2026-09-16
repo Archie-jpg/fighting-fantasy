@@ -9,14 +9,12 @@ class QOptionButton(QPushButton):
     
     def __init__(self, option: Option):
         super().__init__()
-        if option.requirement_met:
-            self.setText(option.text)
-        else:
-            self.setText(f"{option.text} ({option.requirement})")
-            self.setDisabled(True)
+        self.option = option
+        self.setText(option.text)
         self.section = option.next_section
     
     def requirement_not_met(self):
+        self.setText(f"{self.option.text} (Requires {self.option.requirement})")
         self.setDisabled(True)
     
     def mousePressEvent(self, event):

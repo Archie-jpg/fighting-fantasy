@@ -2,12 +2,10 @@ class Option():
     next_section: str
     text: str
     requirement: str
-    requirement_met: bool
     
     def __init__(self, next_section: str, requirement: str, text: str):
         self.next_section = next_section
         self.requirement = requirement
-        self.requirement_met = True
         self.text = text
     
     @classmethod

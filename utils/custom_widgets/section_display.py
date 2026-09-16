@@ -22,6 +22,7 @@ class OptionsContainter(QWidget):
         btn_option = QOptionButton(option)
         btn_option.clicked.connect(self.choose_option)
         self.main_layout.addWidget(btn_option)
+        return btn_option
     
     def clear(self):
         """Removes all options from it's layout
@@ -60,7 +61,9 @@ class SectionDisplay(QWidget):
         self.lbl_section_number.setText(section.number)
         self.lbl_section_text.setText(section.description)
         for option in section.options:
-            self.options_container.load_option(option)
+            btn_option = self.options_container.load_option(option)
+            if not(option.requirement == "" or self.adventure.character_has_item(option.requirement)):
+                btn_option.requirement_not_met()
         
     def load_adventure(self, adventure_file: str, character: Character, section: str):
         self.adventure = AdventurePlayer(adventure_file, character)
