@@ -1,7 +1,7 @@
 from PySide6.QtWidgets import *
 from PySide6.QtCore import Signal, Slot
 
-from classes.sections import Option
+from classes.section import Option
 
 class QOptionButton(QPushButton):
     clicked: Signal = Signal(str)

@@ -35,9 +35,14 @@ class MainWindow(QMainWindow):
 
         # Add Play Adventure Screen
         self.play_adventure_screen = PlayAdventureScreen()
+        self.play_adventure_screen.return_to_menu.connect(self.show_home_screen)
         self.screens.addWidget(self.play_adventure_screen)
         
         self.screens.setCurrentWidget(self.home_screen)
+        
+    def show_home_screen(self):
+        self.screens.setCurrentWidget(self.home_screen)
+        self.home_screen.load()
 
     def choose_new_adventure(self):
         self.screens.setCurrentWidget(self.choose_adventure_screen)

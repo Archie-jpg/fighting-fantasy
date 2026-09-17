@@ -2,12 +2,13 @@ from PySide6.QtWidgets import *
 from PySide6.QtCore import Qt, Signal, Slot
 
 from classes.character import Character
-from classes.sections import Section, Option
+from classes.section import Section, Option
 from classes.adventure_player import AdventurePlayer
 from utils.custom_widgets.option_button import QOptionButton
 
 class OptionsContainter(QWidget):
     option_chosen: Signal = Signal(str)
+    return_to_menu: Signal = Signal()
     
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -23,6 +24,16 @@ class OptionsContainter(QWidget):
         btn_option.clicked.connect(self.choose_option)
         self.main_layout.addWidget(btn_option)
         return btn_option
+    
+    def load_win(self) -> QPushButton:
+        """Creates a button to return to main menu
+
+        Returns:
+            QPushButton: Button to return to main menu
+        """
+        btn_return_to_menu = QPushButton(text="Return to main menu")
+        self.main_layout.addWidget(btn_return_to_menu)
+        return btn_return_to_menu
     
     def clear(self):
         """Removes all options from it's layout
@@ -41,6 +52,7 @@ class SectionDisplay(QWidget):
     options_container: OptionsContainter
     
     # Signals
+    return_to_menu: Signal = Signal()
     
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -61,10 +73,15 @@ class SectionDisplay(QWidget):
         self.options_container.clear()
         self.lbl_section_number.setText(section.number)
         self.lbl_section_text.setText(section.description)
-        for option in section.options:
-            btn_option = self.options_container.load_option(option)
-            if not(option.requirement == "" or self.adventure.requirement_met(option.requirement)):
-                btn_option.requirement_not_met()
+        print(section.type)
+        if section.type == "Win":
+            btn_return_to_menu = self.options_container.load_win()
+            btn_return_to_menu.clicked.connect(self.return_to_menu.emit)
+        else:
+            for option in section.options:
+                btn_option = self.options_container.load_option(option)
+                if not(option.requirement == "" or self.adventure.requirement_met(option.requirement)):
+                    btn_option.requirement_not_met()
         
     def load_adventure(self, adventure_file: str, character: Character, section: str):
         self.adventure = AdventurePlayer(adventure_file, character)

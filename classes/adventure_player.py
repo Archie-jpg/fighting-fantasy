@@ -1,7 +1,7 @@
 import json
 from pathlib import Path
 
-from classes.sections import Section
+from classes.section import Section
 from classes.character import Character
 
 from PySide6.QtCore import QObject, Signal

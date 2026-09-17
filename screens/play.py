@@ -9,6 +9,7 @@ from classes.adventure_player import AdventurePlayer
 
 class PlayAdventureScreen(QWidget):
     # Signals
+    return_to_menu: Signal = Signal()
     
     # Attributes
     adventure_widget: section_display.SectionDisplay
@@ -21,6 +22,7 @@ class PlayAdventureScreen(QWidget):
         
         # Adventure Half
         self.adventure_widget = section_display.SectionDisplay()
+        self.adventure_widget.return_to_menu.connect(self.return_to_menu.emit)
         self.main_layout.addWidget(self.adventure_widget, 0, 0, 1, 2)
         
         # Character Half

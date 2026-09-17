@@ -78,3 +78,9 @@ class HomeScreen(QWidget):
         self.hidden_play_spacer.changeSize(0, self.btn_play.height())
         self.play_options.hide()
         self.create_options.show()
+        
+    def load(self):
+        self.hidden_play_spacer.changeSize(0, 0)
+        self.hidden_play_spacer.changeSize(0, 0)
+        self.play_options.hide()
+        self.create_options.hide()

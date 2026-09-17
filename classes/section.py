@@ -20,9 +20,10 @@ class Section():
     items_lost: list[str]
     options: list[Option]
 
-    def __init__(self, number: str, description: str, items: list[str], items_lost: list[str], options: list[dict["text": str, "requirement": str, "section": str]]):
+    def __init__(self, number: str, description: str, type: str, items: list[str], items_lost: list[str], options: list[dict["text": str, "requirement": str, "section": str]]):
         self.number = number
         self.description = description
+        self.type = type
         self.items = items
         self.items_lost = items_lost
         self.options = []
@@ -31,7 +32,8 @@ class Section():
 
     @classmethod
     def create_from_file(cls, section: str, file: dict):
+        if "type" not in file: file["type"] = "Main"
         if "items" not in file: file["items"] = []
         if "items_lost" not in file: file["items_lost"] = []
-        return cls(section, file["text"], file["items"], file["items_lost"], file["options"])
+        return cls(section, file["text"], file["type"], file["items"], file["items_lost"], file["options"])
     
