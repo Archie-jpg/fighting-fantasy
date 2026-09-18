@@ -7,7 +7,7 @@ from classes.character import Character
 from PySide6.QtCore import QObject, Signal
 
 class AdventurePlayer(QObject):
-    adventure_folder: str
+    adventure_folder: Path
     character: Character
      
     def __init__(self, adventure_folder: Path, character: Character):

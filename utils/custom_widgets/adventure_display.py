@@ -1,3 +1,6 @@
+from pathlib import Path
+from typing import NoReturn
+
 from PySide6.QtWidgets import *
 from PySide6.QtCore import Qt, Signal, Slot
 
@@ -9,6 +12,7 @@ from utils.custom_widgets.option_button import QOptionButton
 class OptionsContainter(QWidget):
     option_chosen: Signal = Signal(str)
     return_to_menu: Signal = Signal()
+    try_again: Signal = Signal()
     
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -25,16 +29,21 @@ class OptionsContainter(QWidget):
         self.main_layout.addWidget(btn_option)
         return btn_option
     
-    def load_win(self) -> QPushButton:
-        """Creates a button to return to main menu
-
-        Returns:
-            QPushButton: Button to return to main menu
-        """
+    def load_win(self) -> NoReturn:
+        """Creates a button to return to main menu"""
         btn_return_to_menu = QPushButton(text="Return to main menu")
+        btn_return_to_menu.clicked.connect(self.return_to_menu.emit)
         self.main_layout.addWidget(btn_return_to_menu)
-        return btn_return_to_menu
     
+    def load_lose(self) -> NoReturn:
+        """Creates a button to return to home screen and try the adventure again"""
+        btn_try_again = QPushButton(text="Try Again")
+        btn_try_again.clicked.connect(self.try_again.emit)
+        self.main_layout.addWidget(btn_try_again)
+        btn_return_to_menu = QPushButton(text="Return to main menu")
+        btn_return_to_menu.clicked.connect(self.return_to_menu.emit)
+        self.main_layout.addWidget(btn_return_to_menu)
+        
     def clear(self):
         """Removes all options from it's layout
         """
@@ -44,7 +53,7 @@ class OptionsContainter(QWidget):
             if widget is not None: widget.deleteLater()
 
 
-class SectionDisplay(QWidget):
+class AdventureDisplay(QWidget):
     adventure: AdventurePlayer
     lay_main: QVBoxLayout
     lbl_section_number: QLabel
@@ -53,6 +62,7 @@ class SectionDisplay(QWidget):
     
     # Signals
     return_to_menu: Signal = Signal()
+    retry_adventure: Signal = Signal(Path)
     
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -66,6 +76,8 @@ class SectionDisplay(QWidget):
         self.lay_main.addStretch()
         self.options_container = OptionsContainter()
         self.options_container.option_chosen.connect(self.load_option_chosen)
+        self.options_container.return_to_menu.connect(self.return_to_menu.emit)
+        self.options_container.try_again.connect(self.start_again)
         self.lay_main.addWidget(self.options_container, alignment=Qt.AlignmentFlag.AlignBottom)
         self.setLayout(self.lay_main)
         
@@ -73,17 +85,15 @@ class SectionDisplay(QWidget):
         self.options_container.clear()
         self.lbl_section_number.setText(section.number)
         self.lbl_section_text.setText(section.description)
-        print(section.type)
-        if section.type == "Win":
-            btn_return_to_menu = self.options_container.load_win()
-            btn_return_to_menu.clicked.connect(self.return_to_menu.emit)
+        if section.type == "Win": self.options_container.load_win()
+        elif section.type == "Lose": self.options_container.load_lose()
         else:
             for option in section.options:
                 btn_option = self.options_container.load_option(option)
                 if not(option.requirement == "" or self.adventure.requirement_met(option.requirement)):
                     btn_option.requirement_not_met()
         
-    def load_adventure(self, adventure_file: str, character: Character, section: str):
+    def load_adventure(self, adventure_file: Path, character: Character, section: str):
         self.adventure = AdventurePlayer(adventure_file, character)
         self.load_next_section(section)
         
@@ -104,3 +114,6 @@ class SectionDisplay(QWidget):
             section_number (str): Section to move to
         """
         self.load_next_section(section_number)
+        
+    def start_again(self):
+        self.retry_adventure.emit(self.adventure.adventure_folder)
