@@ -54,9 +54,6 @@ class Create_Character(QDialog):
         
         self.btn_start_adventure = QPushButton("Start Adventure")
         self.btn_start_adventure.setEnabled(False)
-        self.skill_set = False
-        self.stamina_set = False
-        self.luck_set = False
         self.btn_start_adventure.clicked.connect(self.accept)
         self.main_layout.addWidget(self.btn_start_adventure, 3, 1)
         
@@ -65,7 +62,6 @@ class Create_Character(QDialog):
         self.lbl_skill_value.setText(str(skill))
         self.lbl_skill_value.show()
         self.btn_roll_skill.hide()
-        self.skill_set = True
         self.check_enable_start_adventure()
         
     def roll_stamina(self):
@@ -73,7 +69,6 @@ class Create_Character(QDialog):
         self.lbl_stamina_value.setText(str(stamina))
         self.lbl_stamina_value.show()
         self.btn_roll_stamina.hide()
-        self.stamina_set = True
         self.check_enable_start_adventure()
         
     def roll_luck(self):
@@ -81,12 +76,11 @@ class Create_Character(QDialog):
         self.lbl_luck_value.setText(str(luck))
         self.lbl_luck_value.show()
         self.btn_roll_luck.hide()
-        self.luck_set = True
         self.check_enable_start_adventure()
         
     def check_enable_start_adventure(self):
         """Checks if character is finsihed, meaning start adventure button can be clicked"""
-        if self.skill_set and self.stamina_set and self.luck_set:
+        if self.character.complete():
             self.btn_start_adventure.setEnabled(True)
         
     def accept(self):
