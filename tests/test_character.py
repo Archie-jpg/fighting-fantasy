@@ -107,5 +107,59 @@ class TestComplete:
     def test_character_stats_not_filled(self):
         """If the characters are not set, complete returns False"""
         assert self.new_character.complete() == False
+        
+class TestAddItems:
+    @fixture(autouse=True)
+    def setup(self, new_character: Character):
+        self.new_character = new_character
     
+    def test_add_item(self):
+        """When an item is added, it appears in teh characters equipment"""
+        self.new_character.add_items(["Bag"])
+        assert "Bag" in self.new_character.equipment
+        
+    def test_add_multiple_items(self):
+        """When multiple items are added, each one appears in characters equipment"""
+        self.new_character.add_items(["Bag", "Sock"])
+        assert "Bag" in self.new_character.equipment
+        assert "Sock" in self.new_character.equipment
+        
+    def test_add_more_items(self):
+        """If there is already an item in characters equipment, it is still there when items are added"""
+        self.new_character.equipment = ["Sock"]
+        self.new_character.add_items(["Bag"])
+        assert "Bag" in self.new_character.equipment
+        assert "Sock" in self.new_character.equipment
+        
+class TestRemoveItems:
+    @fixture(autouse=True)
+    def setup(self, new_character: Character):
+        self.new_character = new_character
+        
+    def test_remove_item(self):
+        """When an item is removed, it no longed appears in characters equipments"""
+        self.new_character.equipment = ["Bag"]
+        self.new_character.remove_items(["Bag"])
+        assert "Bag" not in self.new_character.equipment
+    
+    def test_remove_item_not_in_equipment(self):
+        """If removed item is not in characters equipment, nothing happens"""
+        self.new_character.equipment = ["Sock"]
+        self.new_character.remove_items(["Bag"])
+        assert self.new_character.equipment == ["Sock"]
+        
+    def test_remove_multiple_items(self):
+        """If multiple items are to be removed, all should be removed"""
+        self.new_character.equipment = ["Sock", "Bag"]
+        self.new_character.remove_items(["Bag", "Sock"])
+        assert "Sock" not in self.new_character.equipment
+        assert "Bag" not in self.new_character.equipment
+        
+    def test_remove_item_does_not_effect_others(self):
+        """If an item is removed, it should not effect other items"""
+        self.new_character.equipment  = ["Sock", "Bag"]
+        self.new_character.remove_items(["Sock"])
+        assert "Sock" not in self.new_character.equipment
+        assert "Bag" in self.new_character.equipment
+        
         
