@@ -85,6 +85,7 @@ class Create_Character(QDialog):
         self.check_enable_start_adventure()
         
     def check_enable_start_adventure(self):
+        """Checks if character is finsihed, meaning start adventure button can be clicked"""
         if self.skill_set and self.stamina_set and self.luck_set:
             self.btn_start_adventure.setEnabled(True)
         

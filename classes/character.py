@@ -18,6 +18,12 @@ class Character(QObject):
     
     def __init__(self):
         super().__init__()
+        self.init_skill = None
+        self.skill = None
+        self.init_stamina = None
+        self.stamina = None
+        self.init_luck = None
+        self.luck = None
         self.provisions = 10
         self.equipment = []
         
@@ -77,6 +83,12 @@ class Character(QObject):
         result = roll <= self.luck
         self.luck -= 1
         return result
+    
+    def complete(self) -> bool:
+        return (self.init_skill != None and self.skill != None 
+                and self.init_stamina != None and self.stamina != None
+                and self.init_luck != None and self.luck != None)
+            
     
     def add_items(self, items: list[str]):
         """Add a set of items to equipment list

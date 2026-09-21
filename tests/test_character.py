@@ -8,7 +8,7 @@ from tests.my_fixtures import *
 
 class TestNewCharacter:
     @fixture(autouse=True)
-    def setup():
+    def setup(self):
         pass
     
     def test_initial_provisions(self, new_character: Character):
@@ -87,6 +87,25 @@ class TestAbilityChecks:
         self.new_character.luck = 10
         self.new_character.check_luck()
         assert self.new_character.luck == 9, "When a luck check is performed, luck should be reduced by 1"
-    
+        
+
+class TestComplete:
+    @fixture(autouse=True)
+    def setup(self, new_character: Character):
+        self.new_character = new_character
+        
+    def test_character_complete(self):
+        """If all required things are filled, complete returns true"""
+        self.new_character.init_skill = 1
+        self.new_character.skill = 1
+        self.new_character.init_stamina = 1
+        self.new_character.stamina = 1
+        self.new_character.init_luck = 1
+        self.new_character.luck = 1
+        assert self.new_character.complete() == True
+        
+    def test_character_stats_not_filled(self):
+        """If the characters are not set, complete returns False"""
+        assert self.new_character.complete() == False
     
         
