@@ -162,4 +162,19 @@ class TestRemoveItems:
         assert "Sock" not in self.new_character.equipment
         assert "Bag" in self.new_character.equipment
         
+
+class TestHasItem:
+    @fixture(autouse=True)
+    def setup(self, new_character: Character):
+        self.new_character = new_character
+        self.new_character.equipment = ["Sock"]
+        
+    def test_does_have_item(self):
+        """If item in characters equipment, function returns True"""
+        assert self.new_character.has_item("Sock") == True
+        
+    def test_does_not_have_item(self):
+        """If character does not have the item, function returns False"""
+        assert self.new_character.has_item("Bag") == False
+        
         
