@@ -47,10 +47,12 @@ class OptionsContainter(QWidget):
     def clear(self):
         """Removes all options from it's layout
         """
-        while self.main_layout.count() > 0:
-            item = self.main_layout.takeAt(0)
+        item = self.main_layout.takeAt(0)
+        while item != None:
             widget = item.widget()
-            if widget is not None: widget.deleteLater()
+            if widget is not None: 
+                widget.deleteLater()
+            item = self.main_layout.takeAt(0)
 
 
 class AdventureDisplay(QWidget):

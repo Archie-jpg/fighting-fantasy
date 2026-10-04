@@ -10,6 +10,7 @@ class Option():
     
     @classmethod
     def create_from_file(cls, option: dict):
+        if "requirement" not in option: option["requirement"] = ""
         return cls(next_section=option["section"], requirement=option["requirement"], text=option["text"])
         
 
@@ -20,7 +21,7 @@ class Section():
     items_lost: list[str]
     options: list[Option]
 
-    def __init__(self, number: str, description: str, type: str, items: list[str], items_lost: list[str], options: list[dict["text": str, "requirement": str, "section": str]]):
+    def __init__(self, number: str, description: str, type: str, items: list[str], items_lost: list[str], options: list[dict]):
         self.number = number
         self.description = description
         self.type = type
