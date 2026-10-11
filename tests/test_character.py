@@ -47,6 +47,34 @@ class TestNewCharacter:
         assert new_character.init_luck == luck, "Characters initial luck should be set to the value of luck"
 
 
+class TestAdjustStat:
+    @fixture(autouse=True)
+    def setup(self, new_character: Character):
+        self.character = new_character
+        self.character.skill = 10
+        self.character.init_skill = 12
+
+    def test_increase_stat(self):
+        """Increase the skill value by 1"""
+        self.character._adjust_stat("skill", 1)
+        assert self.character.skill == 11, "Adjust stat should increase skill by 1"
+
+    def test_increase_stat_above_initial(self):
+        """A characters skill cannot be increased past it's initial value"""
+        self.character._adjust_stat("skill", 3)
+        assert self.character.skill == 12, "Value of skill cannot go above inital"
+    
+    def test_decrease_stat(self):
+        """Adjust skill decreases skill when adjustment is negative"""
+        self.character._adjust_stat("skill", -1)
+        assert self.character.skill == 9, "Adjust skill should decrease skill by 1 when adjustment is -1"
+
+    def test_decrease_stat_below_0(self):
+        """A characters skill cannot be below 0"""
+        self.character._adjust_stat("skill", -11)
+        assert self.character.skill == 0, "Value of skill cannot go below 0"
+
+
 class TestAdjustSkill:
     @fixture(autouse=True)
     def setup(self, new_character: Character):
@@ -73,7 +101,7 @@ class TestAdjustSkill:
         """A characters skill cannot be below 0"""
         self.character.adjust_skill(-11)
         assert self.character.skill == 0, "Value of skill cannot go below 0"
-        
+
         
 class TestAbilityChecks:
     @fixture(autouse=True)

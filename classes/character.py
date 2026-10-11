@@ -57,15 +57,21 @@ class Character(QObject):
         self.luck = self.init_luck
         return self.luck
 
+    def _adjust_stat(self, stat: str, adjustment: int):
+        """Adjust the given stat by adjustment"""
+        adjusted = getattr(self, stat) + adjustment
+        inital = getattr(self, "init_"+stat)
+        if adjusted > inital: adjusted = inital
+        elif adjusted < 0: adjusted = 0
+        setattr(self, stat, adjusted)
+
     def adjust_skill(self, adjustment: int) -> None:
         """Increase the characters current skill by adjustment, up to their initial skill
         
         Args:
             adjustment(int): How much to increase characters skill by (use negative values to reduce it)
         """
-        self.skill += adjustment
-        if self.skill > self.init_skill: self.skill = self.init_skill
-        elif self.skill < 0: self.skill = 0
+        self._adjust_stat("skill", adjustment)
 
     def adjust_stamina(self, adjustment: int) -> None:
         """Increase the characters current stamina by adjustment, up to their initial stamina
@@ -73,9 +79,7 @@ class Character(QObject):
         Args:
             adjustment(int): How much to increase characters stamina by (use negative values to reduce it)
         """
-        self.stamina += adjustment
-        if self.stamina > self.init_stamina: self.stamina = self.init_stamina
-        elif self.stamina < 0: self.stamina = 0
+        self._adjust_stat("stamina", adjustment)
 
     def adjust_luck(self, adjustment: int) -> None:
         """Increase the characters current luck by adjustment, up to their initial luck
@@ -83,9 +87,7 @@ class Character(QObject):
         Args:
             adjustment(int): How much to increase characters luck by (use negative values to reduce it)
         """
-        self.luck += adjustment
-        if self.luck > self.init_luck: self.luck = self.init_luck
-        elif self.luck < 0: self.luck = 0
+        self._adjust_stat("luck", adjustment)
         
     def check_skill(self) -> bool:
         """Rolls two dice, and checks if it is less than or equal to the characters current skill
