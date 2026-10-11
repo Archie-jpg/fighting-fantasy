@@ -17,16 +17,19 @@ class Option():
 class Section():
     number: str
     description: str
+    type: str
     items: list[str]
     items_lost: list[str]
+    stats: dict[str:int]
     options: list[Option]
 
-    def __init__(self, number: str, description: str, type: str, items: list[str], items_lost: list[str], options: list[dict]):
+    def __init__(self, number: str, description: str, type: str, items: list[str], items_lost: list[str], stats: dict[str:int], options: list[dict]):
         self.number = number
         self.description = description
         self.type = type
         self.items = items
         self.items_lost = items_lost
+        self.stats = stats
         self.options = []
         for opt in options:
             self.options.append(Option.create_from_file(opt))
@@ -36,5 +39,6 @@ class Section():
         if "type" not in file: file["type"] = "Main"
         if "items" not in file: file["items"] = []
         if "items_lost" not in file: file["items_lost"] = []
-        return cls(section, file["text"], file["type"], file["items"], file["items_lost"], file["options"])
+        if "stats" not in file: file["stats"] = {}
+        return cls(section, file["text"], file["type"], file["items"], file["items_lost"], file["stats"], file["options"])
     

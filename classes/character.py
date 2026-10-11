@@ -56,6 +56,15 @@ class Character(QObject):
         self.init_luck = d6.roll_once() + 6
         self.luck = self.init_luck
         return self.luck
+
+    def change_skill(self, adjustment: int) -> None:
+        """Increase the characters current skill by adjustment, up to their initial skill
+        
+        Args:
+            adjustment(int): How much to increase characters skill by (use negative values to reduce it)
+        """
+        pass
+        
         
     def check_skill(self) -> bool:
         """Rolls two dice, and checks if it is less than or equal to the characters current skill
@@ -118,5 +127,17 @@ class Character(QObject):
             bool: Whether or not the item is in equipment
         """
         return item in self.equipment
+
+    def adjust_stats(self, stats: dict[str:int]):
+        """Change relvant characters stats by values given
         
+        Args:
+            stats: A dict which can contain the keys "skill", "stamina" and/or "luck" paired with the value to change it by
+        """
+        if len(stats) == 0: return
+        else:
+            if "skill" in stats: self.skill += stats["skill"]
+            elif "stamina" in stats: self.stamina += stats["stamina"]
+            elif "luck" in stats: self.luck += stats["luck"]
+            self.update_stats.emit()
         

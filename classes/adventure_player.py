@@ -20,6 +20,7 @@ class AdventurePlayer(QObject):
             section = Section.create_from_file(section_number, json.load(file))
             self.character.remove_items(section.items_lost)
             self.character.add_items(section.items)
+            self.character.adjust_stats(section.stats)
             return section
         
     def requirement_met(self, item: str) -> bool:
