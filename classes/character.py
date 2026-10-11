@@ -65,6 +65,7 @@ class Character(QObject):
         """
         self.skill += adjustment
         if self.skill > self.init_skill: self.skill = self.init_skill
+        elif self.skill < 0: self.skill = 0
 
     def adjust_stamina(self, adjustment: int) -> None:
         """Increase the characters current stamina by adjustment, up to their initial stamina
@@ -74,6 +75,7 @@ class Character(QObject):
         """
         self.stamina += adjustment
         if self.stamina > self.init_stamina: self.stamina = self.init_stamina
+        elif self.stamina < 0: self.stamina = 0
 
     def adjust_luck(self, adjustment: int) -> None:
         """Increase the characters current luck by adjustment, up to their initial luck
@@ -83,6 +85,7 @@ class Character(QObject):
         """
         self.luck += adjustment
         if self.luck > self.init_luck: self.luck = self.init_luck
+        elif self.luck < 0: self.luck = 0
         
     def check_skill(self) -> bool:
         """Rolls two dice, and checks if it is less than or equal to the characters current skill

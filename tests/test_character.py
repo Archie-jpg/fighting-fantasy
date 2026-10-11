@@ -45,6 +45,34 @@ class TestNewCharacter:
         assert luck == 12, "luck should be roll + 6"
         assert new_character.luck == luck, "Characters luck should be set to the value of luck"
         assert new_character.init_luck == luck, "Characters initial luck should be set to the value of luck"
+
+
+class TestAdjustSkill:
+    @fixture(autouse=True)
+    def setup(self, new_character: Character):
+        self.character = new_character
+        self.character.skill = 10
+        self.character.init_skill = 12
+
+    def test_increase_skill(self):
+        """Adjust skill increases skill when adjustment is positive"""
+        self.character.adjust_skill(1)
+        assert self.character.skill == 11, "Adjust skill should increase skill by 1 when adjustment is 1"
+
+    def test_increase_skill_above_initial(self):
+        """A characters skill cannot be increased past it's initial value"""
+        self.character.adjust_skill(3)
+        assert self.character.skill == 12, "Value of skill cannot go above inital"
+
+    def test_decrease_skill(self):
+        """Adjust skill decreases skill when adjustment is negative"""
+        self.character.adjust_skill(-1)
+        assert self.character.skill == 9, "Adjust skill should decrease skill by 1 when adjustment is -1"
+
+    def test_decrease_below_0(self):
+        """A characters skill cannot be below 0"""
+        self.character.adjust_skill(-11)
+        assert self.character.skill == 0, "Value of skill cannot go below 0"
         
         
 class TestAbilityChecks:
@@ -176,5 +204,5 @@ class TestHasItem:
     def test_does_not_have_item(self):
         """If character does not have the item, function returns False"""
         assert self.new_character.has_item("Bag") == False
-        
+
         
