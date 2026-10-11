@@ -57,14 +57,32 @@ class Character(QObject):
         self.luck = self.init_luck
         return self.luck
 
-    def change_skill(self, adjustment: int) -> None:
+    def adjust_skill(self, adjustment: int) -> None:
         """Increase the characters current skill by adjustment, up to their initial skill
         
         Args:
             adjustment(int): How much to increase characters skill by (use negative values to reduce it)
         """
-        pass
+        self.skill += adjustment
+        if self.skill > self.init_skill: self.skill = self.init_skill
+
+    def adjust_stamina(self, adjustment: int) -> None:
+        """Increase the characters current stamina by adjustment, up to their initial stamina
         
+        Args:
+            adjustment(int): How much to increase characters stamina by (use negative values to reduce it)
+        """
+        self.stamina += adjustment
+        if self.stamina > self.init_stamina: self.stamina = self.init_stamina
+
+    def adjust_luck(self, adjustment: int) -> None:
+        """Increase the characters current luck by adjustment, up to their initial luck
+        
+        Args:
+            adjustment(int): How much to increase characters luck by (use negative values to reduce it)
+        """
+        self.luck += adjustment
+        if self.luck > self.init_luck: self.luck = self.init_luck
         
     def check_skill(self) -> bool:
         """Rolls two dice, and checks if it is less than or equal to the characters current skill
@@ -136,8 +154,8 @@ class Character(QObject):
         """
         if len(stats) == 0: return
         else:
-            if "skill" in stats: self.skill += stats["skill"]
-            elif "stamina" in stats: self.stamina += stats["stamina"]
-            elif "luck" in stats: self.luck += stats["luck"]
+            if "skill" in stats: self.adjust_skill(stats["skill"])
+            elif "stamina" in stats: self.adjust_stamina(stats["stamina"])
+            elif "luck" in stats: self.adjust_luck(stats["luck"])
             self.update_stats.emit()
         
