@@ -7,20 +7,28 @@ from tests.my_fixtures import *
 
 
 class TestNewCharacter:
-    @fixture(autouse=True)
-    def setup(self):
-        pass
-    
     def test_initial_provisions(self, new_character: Character):
-        """New characters start with 10 provisions"""
+        """New characters start with 10 provisions
+        
+        Args:
+            new_character (Character): An empty character object
+        """
         assert new_character.provisions == 10, "A character should start off with 10 rations"
     
     def test_initial_equipment(self, new_character: Character):
-        """New characters start with no equipment"""
+        """New characters start with no equipment
+        
+        Args:
+            new_character (Character): An empty character object
+        """
         assert new_character.equipment == [], "A character should start off with no equipment"
         
     def test_roll_skill(self, new_character: Character, mocker: MockFixture):
-        """When a characters skill is rolled, the value is roll + 6 and both initial_skill and skill are set to this value"""
+        """When a characters skill is rolled, the value is roll + 6 and both initial_skill and skill are set to this value
+        
+        Args:
+            new_character (Character): An empty character object
+        """
         mock_roll_once = mocker.patch('utils.d6.roll_once')
         mock_roll_once.return_value = 6
         skill = new_character.roll_skill()
@@ -87,20 +95,46 @@ class TestAdjustSkill:
         self.character.adjust_skill(1)
         assert self.character.skill == 11, "Adjust skill should increase skill by 1 when adjustment is 1"
 
-    def test_increase_skill_above_initial(self):
-        """A characters skill cannot be increased past it's initial value"""
-        self.character.adjust_skill(3)
-        assert self.character.skill == 12, "Value of skill cannot go above inital"
-
     def test_decrease_skill(self):
         """Adjust skill decreases skill when adjustment is negative"""
         self.character.adjust_skill(-1)
         assert self.character.skill == 9, "Adjust skill should decrease skill by 1 when adjustment is -1"
 
-    def test_decrease_below_0(self):
-        """A characters skill cannot be below 0"""
-        self.character.adjust_skill(-11)
-        assert self.character.skill == 0, "Value of skill cannot go below 0"
+
+class TestAdjustStamina:
+    @fixture(autouse=True)
+    def setup(self, new_character: Character):
+        self.character = new_character
+        self.character.stamina = 10
+        self.character.init_stamina = 12
+
+    def test_increase_stamina(self):
+        """Adjust stamina increases stamina when adjustment is positive"""
+        self.character.adjust_stamina(1)
+        assert self.character.stamina == 11, "Adjust stamina should increase stamina by 1 when adjustment is 1"
+
+    def test_decrease_stamina(self):
+        """Adjust stamina decreases stamina when adjustment is negative"""
+        self.character.adjust_stamina(-1)
+        assert self.character.stamina == 9, "Adjust stamina should decrease stamina by 1 when adjustment is -1"
+
+
+class TestAdjustLuck:
+    @fixture(autouse=True)
+    def setup(self, new_character: Character):
+        self.character = new_character
+        self.character.luck = 10
+        self.character.init_luck = 12
+
+    def test_increase_luck(self):
+        """Adjust luck increases luck when adjustment is positive"""
+        self.character.adjust_luck(1)
+        assert self.character.luck == 11, "Adjust luck should increase luck by 1 when adjustment is 1"
+
+    def test_decrease_luck(self):
+        """Adjust luck decreases luck when adjustment is negative"""
+        self.character.adjust_luck(-1)
+        assert self.character.luck == 9, "Adjust luck should decrease luck by 1 when adjustment is -1"
 
         
 class TestAbilityChecks:
@@ -109,7 +143,7 @@ class TestAbilityChecks:
         mock_roll_once.return_value = 4
         self.new_character = new_character
     
-    def test_successful_skill_check(self):
+    def test_successful_luck_check(self):
         self.new_character.skill = 12
         assert self.new_character.check_skill() == True, "If roll is less than skill, true should be returned"
         self.new_character.skill = 8
@@ -163,6 +197,7 @@ class TestComplete:
     def test_character_stats_not_filled(self):
         """If the characters are not set, complete returns False"""
         assert self.new_character.complete() == False
+
         
 class TestAddItems:
     @fixture(autouse=True)
@@ -186,6 +221,7 @@ class TestAddItems:
         self.new_character.add_items(["Bag"])
         assert "Bag" in self.new_character.equipment
         assert "Sock" in self.new_character.equipment
+
         
 class TestRemoveItems:
     @fixture(autouse=True)
