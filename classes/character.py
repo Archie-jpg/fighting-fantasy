@@ -15,6 +15,7 @@ class Character(QObject):
     # Signals
     update_stats: Signal = Signal()
     update_equipment: Signal = Signal()
+    update_provisions: Signal = Signal()
     all_provisions_used: Signal = Signal()
     
     def __init__(self):
@@ -180,3 +181,5 @@ class Character(QObject):
         if self.provisions > 0:
             self.adjust_provisions(-1)
             self.adjust_stamina(4)
+            self.update_provisions.emit()
+            self.update_stats.emit()

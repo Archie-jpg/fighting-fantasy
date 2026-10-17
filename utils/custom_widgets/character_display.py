@@ -200,6 +200,7 @@ class CharacterDisplay(QWidget):
         self.update_equipment()
         self.character.update_equipment.connect(self.update_equipment)
         self.character.update_stats.connect(self.update_stats)
+        self.character.update_provisions.connect(self.update_provisions)
         self.provisons_widget.eat_provisions.connect(self.character.eat_provision)
         self.character.all_provisions_used.connect(self.provisons_widget.disable_eat_provisions)
         
