@@ -91,6 +91,8 @@ class StatsWidget(QWidget):
         self.load_curr_luck(luck)
         
 class ProvisionsWidget(QWidget):
+    eat_provisions: Signal = Signal()
+
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
         self.lay_main = QHBoxLayout()
@@ -100,10 +102,14 @@ class ProvisionsWidget(QWidget):
         self.lbl_provisions_remaining = QLabel()
         self.lay_main.addWidget(self.lbl_provisions_remaining)
         self.btn_eat_provisions = QPushButton("Eat")
+        self.btn_eat_provisions.clicked.connect(self.eat_provisions.emit)
         self.lay_main.addWidget(self.btn_eat_provisions)
         
     def set_current_provs(self, provisions: int):
         self.lbl_provisions_remaining.setText(str(provisions))
+
+    def disable_eat_provisions(self):
+        self.btn_eat_provisions.setDisabled(True)
         
 
 class PotionWidget(QWidget):
@@ -194,6 +200,8 @@ class CharacterDisplay(QWidget):
         self.update_equipment()
         self.character.update_equipment.connect(self.update_equipment)
         self.character.update_stats.connect(self.update_stats)
+        self.provisons_widget.eat_provisions.connect(self.character.eat_provision)
+        self.character.all_provisions_used.connect(self.provisons_widget.disable_eat_provisions)
         
     def check_item(self, item: str) -> bool:
         return self.character.has_item(item)

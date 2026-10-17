@@ -15,6 +15,7 @@ class Character(QObject):
     # Signals
     update_stats: Signal = Signal()
     update_equipment: Signal = Signal()
+    all_provisions_used: Signal = Signal()
     
     def __init__(self):
         super().__init__()
@@ -163,4 +164,19 @@ class Character(QObject):
             elif "stamina" in stats: self.adjust_stamina(stats["stamina"])
             elif "luck" in stats: self.adjust_luck(stats["luck"])
             self.update_stats.emit()
+
+    def adjust_provisions(self, adjustment: int):
+        """Change the number of provisions the characters has by adjustment
         
+        Args:
+            adjustment (int): Number to add to provisions (use negative to reduce characters provisions)"""
+        self.provisions += adjustment
+        if self.provisions <= 0:
+            self.provisions = 0
+            self.all_provisions_used.emit()
+
+    def eat_provision(self):
+        """Reduces charaters provisions by 1 and increases their stamina by 4"""
+        if self.provisions > 0:
+            self.adjust_provisions(-1)
+            self.adjust_stamina(4)

@@ -1,4 +1,4 @@
-from unittest.mock import patch
+from unittest.mock import Mock, patch
 
 from pytest import fixture
 from pytest_mock import MockFixture
@@ -269,4 +269,59 @@ class TestHasItem:
         """If character does not have the item, function returns False"""
         assert self.new_character.has_item("Bag") == False
 
-        
+
+class TestAdjustProvisions:
+    @fixture(autouse=True)
+    def setup(self, new_character: Character):
+        self.character = new_character
+        self.character.provisions = 10
+
+    def test_increase_provisions(self):
+        """If adjusment is positive, the characters provisions are increased by that number"""
+        self.character.adjust_provisions(1)
+        assert self.character.provisions == 11
+
+    def test_decrease_provisions(self):
+        """If adjustment is negative, the characters provisions are decreased by that number"""
+        self.character.adjust_provisions(-1)
+        assert self.character.provisions == 9
+
+    def test_emits_all_provisions_used(self):
+        """If provisions reaches 0 or less, the all_provisions_used signal needs to be emitted"""
+        all_provisions_used_emitted = Mock()
+        self.character.all_provisions_used.connect(all_provisions_used_emitted)
+        self.character.adjust_provisions(-10)
+        all_provisions_used_emitted.assert_called_once()
+
+    def test_only_emits_all_provisions_used_if_needed(self):
+        """If provisions have not reached 0, all_provisions_used is not emitted"""
+        all_provisions_used_emitted = Mock()
+        self.character.all_provisions_used.connect(all_provisions_used_emitted)
+        self.character.adjust_provisions(0)
+        all_provisions_used_emitted.assert_not_called()
+
+
+class TestEatProvisions:
+    @fixture(autouse=True)
+    def setup(self, new_character: Character):
+        self.character = new_character
+        self.character.provisions = 10
+        self.character.init_stamina = 12
+        self.character.stamina = 4
+
+    def test_provisions_reduced(self):
+        """When character eats provisions, their number of provisions is reduced by 1"""
+        self.character.eat_provision()
+        assert self.character.provisions == 9
+
+    def test_stamina_increased(self):
+        """When character earts provisions, their current stamina is increased by 4"""
+        self.character.eat_provision()
+        assert self.character.stamina == 8
+
+    def test_only_eat_provisions_if_avalible(self):
+        """If the character has no provisions left, nothing should happen"""
+        self.character.provisions = 0
+        self.character.eat_provision()
+        assert self.character.provisions == 0
+        assert self.character.stamina == 4
