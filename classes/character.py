@@ -183,3 +183,7 @@ class Character(QObject):
             self.adjust_stamina(4)
             self.update_provisions.emit()
             self.update_stats.emit()
+
+    def alive(self) -> bool:
+        """Returns whether or not the characters stamina is greater than 0"""
+        return self.stamina > 0

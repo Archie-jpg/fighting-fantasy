@@ -21,6 +21,9 @@ class AdventurePlayer(QObject):
             self.character.remove_items(section.items_lost)
             self.character.add_items(section.items)
             self.character.adjust_stats(section.stats)
+            if not self.character.alive(): # If damage in this section has killed the character, switch it to a lose section
+                section.description += "\n \n Your character has died"
+                section.type = "Lose"
             return section
         
     def requirement_met(self, item: str) -> bool:
@@ -33,4 +36,3 @@ class AdventurePlayer(QObject):
             bool: True if character has item, false otherwise
         """
         return self.character.has_item(item)
-            

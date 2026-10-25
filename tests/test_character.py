@@ -118,6 +118,13 @@ class TestAdjustStamina:
         self.character.adjust_stamina(-1)
         assert self.character.stamina == 9, "Adjust stamina should decrease stamina by 1 when adjustment is -1"
 
+    # def test_character_died(self):
+    #     """If characters stamina is reduced to 0, character died is emitted"""
+    #     self.character_died_emitted = Mock()
+    #     self.character.character_died.connect(self.character_died_emitted)
+    #     self.character.adjust_stamina(-10)
+    #     self.character_died_emitted.assert_called_once()
+
 
 class TestAdjustLuck:
     @fixture(autouse=True)
