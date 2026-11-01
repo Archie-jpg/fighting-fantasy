@@ -118,13 +118,6 @@ class TestAdjustStamina:
         self.character.adjust_stamina(-1)
         assert self.character.stamina == 9, "Adjust stamina should decrease stamina by 1 when adjustment is -1"
 
-    # def test_character_died(self):
-    #     """If characters stamina is reduced to 0, character died is emitted"""
-    #     self.character_died_emitted = Mock()
-    #     self.character.character_died.connect(self.character_died_emitted)
-    #     self.character.adjust_stamina(-10)
-    #     self.character_died_emitted.assert_called_once()
-
 
 class TestAdjustLuck:
     @fixture(autouse=True)
@@ -332,3 +325,20 @@ class TestEatProvisions:
         self.character.eat_provision()
         assert self.character.provisions == 0
         assert self.character.stamina == 4
+
+
+class TestAlive:
+    def test_stamina_above_death(self, new_character: Character):
+        """If character stamina above 0, alive returns true"""
+        new_character.stamina = 10
+        assert new_character.alive() == True
+
+    def test_stamina_at_death(self, new_character: Character):
+        """If character stamina is 0, alive returns false"""
+        new_character.stamina = 0
+        assert new_character.alive() == False
+
+    def test_stamina_below_death(self, new_character: Character):
+        """If character stamina below 0, alive returns false"""
+        new_character.stamina = -2
+        assert new_character.alive() == False
