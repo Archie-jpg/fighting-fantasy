@@ -23,7 +23,7 @@ class Section():
     stats: dict[str:int]
     options: list[Option]
 
-    def __init__(self, number: str, description: str, type: str, items: list[str], items_lost: list[str], stats: dict[str:int], options: list[dict]):
+    def __init__(self, number: str, description: str, type: str = "Main", items: list[str] = [], items_lost: list[str] = [], stats: dict[str:int] = {}, options: list[dict] = []):
         self.number = number
         self.description = description
         self.type = type
