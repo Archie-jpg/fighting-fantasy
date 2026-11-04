@@ -21,7 +21,6 @@ class OptionsContainer(QWidget):
 
     @Slot(str)
     def choose_option(self, next_section: str):
-        print(next_section)
         self.option_chosen.emit(next_section)
 
     def load_option(self, option: Option):

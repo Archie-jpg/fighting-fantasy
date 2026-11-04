@@ -32,5 +32,4 @@ class AdventureCard(QWidget):
         aventure title"""
         with open(f"{self.folder_path}/description.txt") as file:
             description: str = file.read()
-            print(description)
             self.lbl_description.setText(description)

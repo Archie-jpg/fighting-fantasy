@@ -76,4 +76,3 @@ class AdventureDisplay(QWidget):
     def display_character_death(self):
         death_section = Section("Death", "You have died, thus failing your adventure", "Lose", [], [], {}, [])
         self.display_section(death_section)
-        print("Displaying character death")
