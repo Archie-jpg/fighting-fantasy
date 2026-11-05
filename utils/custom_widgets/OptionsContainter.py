@@ -1,4 +1,4 @@
-from classes.section import Option
+from classes.section import Option, Section
 from utils.custom_widgets.option_button import QOptionButton
 
 
@@ -13,6 +13,7 @@ class OptionsContainer(QWidget):
     option_chosen: Signal = Signal(str)
     return_to_menu: Signal = Signal()
     try_again: Signal = Signal()
+    chosen_item_to_lose: Signal = Signal(str, Section, arguments=["item", "section"])
 
     def __init__(self, parent=None):
         QWidget.__init__(self, parent)
@@ -43,6 +44,13 @@ class OptionsContainer(QWidget):
         btn_return_to_menu = QPushButton(text="Return to main menu")
         btn_return_to_menu.clicked.connect(self.return_to_menu.emit)
         self.main_layout.addWidget(btn_return_to_menu)
+
+    def load_equipment_to_lose(self, equipment: list[str], section: Section) -> NoReturn:
+        """Creates a button for each piece of equipment, sending out the equipment lost signal when one is chosen"""
+        for item in equipment:
+            btn_choose_item = QPushButton(text=f"Lose {item}")
+            btn_choose_item.clicked.connect(lambda: self.chosen_item_to_lose.emit(item, section))
+            self.main_layout.addWidget(btn_choose_item)
 
     def clear(self):
         """Removes all options from it's layout

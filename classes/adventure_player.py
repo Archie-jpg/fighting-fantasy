@@ -4,7 +4,7 @@ from pathlib import Path
 from classes.section import Section
 from classes.character import Character
 
-from PySide6.QtCore import QObject, Signal
+from PySide6.QtCore import QObject, Signal, Slot
 
 class AdventurePlayer(QObject):
     adventure_folder: Path
@@ -36,3 +36,12 @@ class AdventurePlayer(QObject):
             bool: True if character has item, false otherwise
         """
         return self.character.has_item(item)
+
+    def get_character_equipment(self) -> list[str]:
+        """Gets all the equipment the character has"""
+        return self.character.equipment
+
+    @Slot(str)
+    def lose_item(self, item: str) -> None:
+        """Removes given item from characters equipment"""
+        self.character.remove_items([item])

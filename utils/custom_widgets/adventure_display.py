@@ -9,7 +9,7 @@ from classes.adventure_player import AdventurePlayer
 from utils.custom_widgets.OptionsContainter import OptionsContainer
 
 class AdventureDisplay(QWidget):
-    adventure: AdventurePlayer
+    adventure_player: AdventurePlayer
     lay_main: QVBoxLayout
     lbl_section_number: QLabel
     lbl_section_text: QLabel
@@ -37,19 +37,25 @@ class AdventureDisplay(QWidget):
         self.setLayout(self.lay_main)
         
     def display_section(self, section: Section):
+        print("Displaying section")
         self.options_container.clear()
         self.lbl_section_number.setText(section.number)
         self.lbl_section_text.setText(section.description)
         if section.type == "Win": self.options_container.load_win()
         elif section.type == "Lose": self.options_container.load_lose()
+        elif section.type == "ChooseLostEquipment": 
+            equipment: list[str] = self.adventure_player.get_character_equipment()
+            self.options_container.load_equipment_to_lose(equipment, section)
+            self.options_container.chosen_item_to_lose.connect(self.lose_chosen_item)
         else:
+            print("Creating options")
             for option in section.options:
                 btn_option = self.options_container.load_option(option)
-                if not(option.requirement == "" or self.adventure.requirement_met(option.requirement)):
+                if not(option.requirement == "" or self.adventure_player.requirement_met(option.requirement)):
                     btn_option.requirement_not_met()
         
     def load_adventure(self, adventure_file: Path, character: Character, section: str):
-        self.adventure = AdventurePlayer(adventure_file, character)
+        self.adventure_player = AdventurePlayer(adventure_file, character)
         self.load_next_section(section)
         
     def load_next_section(self, section_number: str):
@@ -58,7 +64,8 @@ class AdventureDisplay(QWidget):
         Args:
             section_number: Reference number of the section
         """
-        section: Section = self.adventure.load_section(section_number)
+        print("Loading section")
+        section: Section = self.adventure_player.load_section(section_number)
         self.display_section(section)
     
     @Slot(str)
@@ -71,8 +78,15 @@ class AdventureDisplay(QWidget):
         self.load_next_section(section_number)
         
     def start_again(self):
-        self.retry_adventure.emit(self.adventure.adventure_folder)
+        self.retry_adventure.emit(self.adventure_player.adventure_folder)
 
     def display_character_death(self):
         death_section = Section("Death", "You have died, thus failing your adventure", "Lose", [], [], {}, [])
         self.display_section(death_section)
+
+    @Slot(str)
+    @Slot(Section)
+    def lose_chosen_item(self, item: str, section: Section):
+        self.adventure_player.lose_item(item)
+        section.type = ""
+        self.display_section(section)
