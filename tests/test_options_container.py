@@ -64,3 +64,43 @@ class TestLoadWin:
         win_button: QPushButton = self.options_container.main_layout.itemAt(0).widget()
         win_button.click()
         assert spy.count() == 1
+
+class TestLoadLose:
+    @fixture(autouse=True)
+    def setup(self):
+        self.options_container = OptionsContainer()
+
+    def test_btns_added(self):
+        """When a lose section is loaded, two buttons are added to options container. First is to try again
+        and second is to return to main menu"""
+        self.options_container.load_lose()
+        btn_try_again: QPushButton = self.options_container.main_layout.itemAt(0).widget()
+        assert btn_try_again.text() == "Try Again"
+
+    def test_btn_try_again(self):
+        """When try again button is clicked, try_again signal is emitted"""
+        spy: QSignalSpy = QSignalSpy(self.options_container.try_again)
+        self.options_container.load_lose()
+        btn_try_again: QPushButton = self.options_container.main_layout.itemAt(0).widget()
+        btn_try_again.click()
+        assert spy.count() == 1
+
+    def test_return_to_menu(self):
+        """When return to main menu button is clicked, signal is emitted"""
+        spy: QSignalSpy = QSignalSpy(self.options_container.return_to_menu)
+        self.options_container.load_lose()
+        btn_return_to_menu: QPushButton = self.options_container.main_layout.itemAt(1).widget()
+        btn_return_to_menu.click()
+        assert spy.count() == 1
+
+
+class TestClear:
+    @fixture(autouse=True)
+    def setup(self):
+        self.options_container = OptionsContainer()
+
+    def test_clear_one_option(self):
+        """When clear is run, it remove all widgets from main layout"""
+        self.options_container.main_layout.addWidget(QPushButton())
+        self.options_container.clear()
+        assert self.options_container.main_layout.count() == 0

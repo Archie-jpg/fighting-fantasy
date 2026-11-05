@@ -47,9 +47,10 @@ class OptionsContainer(QWidget):
     def clear(self):
         """Removes all options from it's layout
         """
-        item = self.main_layout.takeAt(0)
-        while item != None:
+        options_left = self.main_layout.count()
+        while options_left > 0:
+            item = self.main_layout.takeAt(0)
             widget = item.widget()
             if widget is not None:
                 widget.deleteLater()
-            item = self.main_layout.takeAt(0)
+            options_left -= 1
